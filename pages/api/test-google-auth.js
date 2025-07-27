@@ -6,6 +6,8 @@ export default async function handler(req, res) {
   console.log("PRIVATE_KEY_START:", process.env.GOOGLE_PRIVATE_KEY?.slice(0, 30));
   console.log("PRIVATE_KEY_END:", process.env.GOOGLE_PRIVATE_KEY?.slice(-30));
 
+console.log("KEY RAW:", process.env.GOOGLE_PRIVATE_KEY);
+
   try {
     const jwtClient = new google.auth.JWT(
       process.env.GOOGLE_CLIENT_EMAIL,
