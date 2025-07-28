@@ -32,7 +32,7 @@ export default function SuccessPage() {
         <p><strong>{name}</strong>, tu cita ha sido agendada correctamente para:</p>
         <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{fechaFormato}</p>
         <p>Te hemos enviado un correo de confirmación a <strong>{email}</strong>.</p>
-        <p><strong>Teléfono de contacto:</strong> {telefono}</p>
+        <p><strong>Puedes contactarnos al +51 941492192</strong></p>
 
         <a href="/" style={{
           marginTop: "1.5rem",

@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     // --- Enviar ambos correos
     await enviarCorreo({
       to: email,
-      subject: "✅ Confirmación de tu cita en Virtual Flow",
+      subject: "✅ Confirmación de cita en Virtual Flow",
       html: contenidoUsuario,
     });
 
