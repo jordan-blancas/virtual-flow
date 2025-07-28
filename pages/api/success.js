@@ -8,7 +8,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Faltan datos en la URL" });
     }
 
-    // Enviar correo al cliente
     const asunto = "Confirmación de tu cita";
     const contenidoHtml = `
       <h2>¡Hola, ${name}!</h2>
@@ -26,10 +25,12 @@ export default async function handler(req, res) {
       html: contenidoHtml,
     });
 
-    // Redirige al frontend para mostrar la página de confirmación
     res.redirect(302, `/success?name=${name}&date=${date}&hour=${hour}&email=${email}&telefono=${telefono}`);
   } catch (error) {
     console.error("Error en /api/success:", error);
-    res.status(500).json({ message: "Error al procesar la reserva", details: error.message });
+    res.status(500).json({
+      message: "Error al procesar la reserva",
+      details: error.message,
+    });
   }
 }

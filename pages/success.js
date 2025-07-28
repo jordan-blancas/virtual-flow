@@ -1,34 +1,20 @@
-export default async function handler(req, res) {
-  const { name, date, hour, email, telefono } = req.query;
+// pages/success.js
+import { useRouter } from "next/router";
 
-  try {
-    if (!name || !date || !hour || !email) {
-      return res.status(400).json({ message: "Faltan datos en la URL" });
-    }
+export default function SuccessPage() {
+  const { query } = useRouter();
+  const { name, date, hour, email, telefono } = query;
 
-    const asunto = "Confirmación de tu cita";
-    const contenidoHtml = `
-      <h2>¡Hola, ${name}!</h2>
-      <p>Gracias por reservar tu cita. Nos pondremos en contacto contigo para confirmarla.</p>
-      <p><strong>Fecha preferida:</strong> ${date}</p>
-      <p><strong>Hora preferida:</strong> ${hour}</p>
-      <p><strong>Teléfono:</strong> ${telefono || "No proporcionado"}</p>
-      <br/>
-      <p>Saludos,<br>Equipo de Virtual Flow</p>
-    `;
+  if (!name) return <p>Cargando...</p>;
 
-    await enviarCorreo({
-      to: email,
-      subject: asunto,
-      html: contenidoHtml,
-    });
-
-    res.redirect(302, `/success?name=${name}&date=${date}&hour=${hour}&email=${email}&telefono=${telefono}`);
-  } catch (error) {
-    console.error("Error en /api/success:", error);
-    res.status(500).json({
-      message: "Error al procesar la reserva",
-      details: error.message,
-    });
-  }
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h1>✅ Reserva confirmada</h1>
+      <p><strong>Nombre:</strong> {name}</p>
+      <p><strong>Email:</strong> {email}</p>
+      <p><strong>Fecha:</strong> {date}</p>
+      <p><strong>Hora:</strong> {hour}</p>
+      <p><strong>Teléfono:</strong> {telefono}</p>
+    </div>
+  );
 }
