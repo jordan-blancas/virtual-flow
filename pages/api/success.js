@@ -1,3 +1,4 @@
+// pages/api/success.js
 import { enviarCorreo } from "../../lib/sendEmail";
 
 export default async function handler(req, res) {
@@ -8,24 +9,55 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Faltan datos en la URL" });
     }
 
-    const asunto = "Confirmación de tu cita";
-    const contenidoHtml = `
-      <h2>¡Hola, ${name}!</h2>
-      <p>Gracias por reservar tu cita. Nos pondremos en contacto contigo para confirmarla.</p>
-      <p><strong>Fecha preferida:</strong> ${date}</p>
-      <p><strong>Hora preferida:</strong> ${hour}</p>
-      <p><strong>Teléfono:</strong> ${telefono || "No proporcionado"}</p>
-      <br/>
-      <p>Saludos,<br>Equipo de Virtual Flow</p>
-    `;
-
-    await enviarCorreo({
-      to: email,
-      subject: asunto,
-      html: contenidoHtml,
+    const fechaFormato = new Date(`${date}T${hour}:00`).toLocaleString("es-PE", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "America/Lima",
     });
 
-    res.redirect(302, `/success?name=${name}&date=${date}&hour=${hour}&email=${email}&telefono=${telefono}`);
+    // --- Correo al usuario
+    const contenidoUsuario = `
+      <h2>Hola, ${name} 👋</h2>
+      <p>Tu cita ha sido agendada con éxito para el:</p>
+      <p><strong>${fechaFormato}</strong></p>
+      <p>📧 Se ha registrado tu correo: <strong>${email}</strong></p>
+      <p>📞 Teléfono: <strong>${telefono || "No proporcionado"}</strong></p>
+      <br/>
+      <p>Nos pondremos en contacto contigo para confirmar cualquier detalle adicional.</p>
+      <p>Gracias,<br><strong>Equipo de Virtual Flow</strong></p>
+    `;
+
+    // --- Correo al administrador
+    const contenidoAdmin = `
+      <h2>🔔 Nueva reserva recibida</h2>
+      <p>📆 Fecha y hora: <strong>${fechaFormato}</strong></p>
+      <p>👤 Nombre: ${name}</p>
+      <p>📧 Correo: ${email}</p>
+      <p>📞 Teléfono: ${telefono || "No proporcionado"}</p>
+    `;
+
+    // --- Enviar ambos correos
+    await enviarCorreo({
+      to: email,
+      subject: "✅ Confirmación de tu cita en Virtual Flow",
+      html: contenidoUsuario,
+    });
+
+    await enviarCorreo({
+      to: "automatizaciondenegocios@gmail.com",
+      subject: "🔔 Nueva cita agendada",
+      html: contenidoAdmin,
+    });
+
+    // Redireccionar a página de éxito con query visible
+    res.redirect(
+      302,
+      `/success?name=${encodeURIComponent(name)}&date=${date}&hour=${hour}&email=${email}&telefono=${telefono}`
+    );
   } catch (error) {
     console.error("Error en /api/success:", error);
     res.status(500).json({
