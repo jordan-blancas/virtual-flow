@@ -42,13 +42,13 @@ export default async function handler(req, res) {
 
     // --- Enviar ambos correos
     await enviarCorreo({
-      to: email,
+      to: email, // solo usuario
       subject: "✅ Confirmación de cita en Virtual Flow",
       html: contenidoUsuario,
     });
 
     await enviarCorreo({
-      to: "automatizaciondenegocios@gmail.com",
+      to: "automatizaciondenegocios@gmail.com", // solo admin
       subject: "🔔 Nueva cita agendada",
       html: contenidoAdmin,
     });
