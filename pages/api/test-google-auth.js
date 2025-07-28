@@ -4,19 +4,22 @@ export default async function handler(req, res) {
   // Obtén el valor RAW de la variable de entorno
   const rawKey = process.env.GOOGLE_PRIVATE_KEY;
 
-  // Aplica el replace mejorado
-  const privateKey = rawKey.replace(/\\r/g, '').replace(/\\n/g, '\n');
+  // Reemplazos multinivel
+  let privateKey = rawKey;
+  privateKey = privateKey.replace(/\\\\n/g, '\n');
+  privateKey = privateKey.replace(/\\n/g, '\n');
+  privateKey = privateKey.replace(/\n/g, '\n');
 
-  // Logs de depuración avanzada para ver caracteres invisibles/nocivos
-  console.log("START CHARS (ASCII):", privateKey.slice(0,30).split('').map(x => x.charCodeAt(0)));
-  console.log("END CHARS (ASCII):", privateKey.slice(-30).split('').map(x => x.charCodeAt(0)));
-
-  // (Opcional) Otros logs si quieres
-  console.log("RAW:", JSON.stringify(rawKey).slice(0, 100));
-  console.log("AFTER REPLACE:", JSON.stringify(privateKey).slice(0, 100));
-  console.log("PRIMERAS LINEAS:");
-  console.log(privateKey.split('\n')[0]); // Esperado: "-----BEGIN PRIVATE KEY-----"
-  console.log(privateKey.split('\n')[1]); // Esperado: "MIIE..."
+  // LOGS
+  console.log("AFTER REPLACE:", JSON.stringify(privateKey.slice(0, 100)));
+  console.log("Línea 0:", privateKey.split('\n')[0]); // "-----BEGIN PRIVATE KEY-----"
+  console.log("Línea 1:", privateKey.split('\n')[1]); // "MIIEvAI..."
+  console.log("RAW SLICE:", rawKey.slice(0, 60));
+  console.log("CUENTA \\:", (rawKey.match(/\\/g) || []).length);
+  console.log("CUENTA \\n:", (rawKey.match(/\\n/g) || []).length);
+  console.log("CUENTA n:", (rawKey.match(/n/g) || []).length);
+  console.log("JSONIFIED RAW:", JSON.stringify(rawKey.slice(0, 80)));
+  console.log(JSON.stringify(privateKey.slice(0, 70)));
 
   try {
     const jwtClient = new google.auth.JWT(
