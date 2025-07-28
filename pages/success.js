@@ -1,5 +1,3 @@
-import { enviarCorreo } from "../../lib/sendEmail";
-
 export default async function handler(req, res) {
   const { name, date, hour, email, telefono } = req.query;
 
