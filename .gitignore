@@ -17,3 +17,7 @@ yarn-error.log*
 # Otros
 *.pem
 node_modules
+
+lib/calendar-credentials.json
+
+.vercel
