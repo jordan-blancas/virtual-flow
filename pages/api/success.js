@@ -40,6 +40,7 @@ export default async function handler(req, res) {
       <p>📞 Teléfono: ${telefono || "No proporcionado"}</p>
     `;
 
+    console.log("HTML que se envía al usuario:", contenidoUsuario);
     // --- Enviar ambos correos
     await enviarCorreo({
       to: email, // solo usuario
