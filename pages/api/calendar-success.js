@@ -1,4 +1,3 @@
-import { crearEvento } from "../../lib/calendar";
 import { enviarCorreo } from "../../lib/sendEmail";
 
 export default async function handler(req, res) {
@@ -10,7 +9,6 @@ export default async function handler(req, res) {
     }
 
 
-    const evento = await crearEvento({ name, email, date, hour, telefono });
     const meetLink = evento.conferenceData?.entryPoints?.find(p => p.entryPointType === "video")?.uri;
 console.log("🔗 Meet link:", meetLink);
     await enviarCorreo({
