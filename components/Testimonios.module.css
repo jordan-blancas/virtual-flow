@@ -18,6 +18,8 @@
   position: relative;
   max-width: 600px;
   margin: 0 auto;
+  position: relative; /* ← Necesario para que absolute funcione */
+  min-height: 180px;  /* Ajusta según el contenido mínimo de un testimonio */
 }
 
 .testimonio {
