@@ -2,6 +2,7 @@ import Hero from "../components/Hero";
 import Beneficios from "../components/Beneficios";
 import Proceso from "../components/Proceso";
 import Formulario from "../components/Formulario";
+import Testimonios from "../components/Testimonios";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Beneficios />
       <Proceso />
       <Formulario />
+      <Testimonios />
     </>
   );
 }
