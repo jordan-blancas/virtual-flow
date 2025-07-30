@@ -1,22 +1,54 @@
 "use client";
+import { useEffect, useState } from "react";
+import styles from "./Testimonios.module.css";
+
+const testimonios = [
+  {
+    texto: "Excelente servicio, muy profesional y rápido. ¡Repetiré sin duda!",
+    autor: "Ana M.",
+  },
+  {
+    texto: "Me ayudaron a resolver mi problema en minutos. Muy recomendado.",
+    autor: "Carlos P.",
+  },
+  {
+    texto: "Atención personalizada y resultados efectivos. ¡Gracias!",
+    autor: "Lucía G.",
+  },
+];
 
 export default function Testimonios() {
+  const [actual, setActual] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActual((prev) => (prev + 1) % testimonios.length);
+    }, 3500);
+    return () => clearInterval(id);
+  }, []);
+
   return (
-    <section style={{ padding: "2rem 0", background: "#f9f9f9" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "1.5rem" }}>Testimonios</h2>
-      <div style={{ display: "flex", gap: "2rem", justifyContent: "center", flexWrap: "wrap" }}>
-        <div style={{ maxWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px #0001", padding: "1.5rem" }}>
-          <p>“Excelente servicio, muy profesional y rápido. ¡Repetiré sin duda!”</p>
-          <strong>- Ana M.</strong>
-        </div>
-        <div style={{ maxWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px #0001", padding: "1.5rem" }}>
-          <p>“Me ayudaron a resolver mi problema en minutos. Muy recomendado.”</p>
-          <strong>- Carlos P.</strong>
-        </div>
-        <div style={{ maxWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px #0001", padding: "1.5rem" }}>
-          <p>“Atención personalizada y resultados efectivos. ¡Gracias!”</p>
-          <strong>- Lucía G.</strong>
-        </div>
+    <section className={styles.section}>
+      <h2 className={styles.title}>Testimonios</h2>
+      <div className={styles.slider}>
+        {testimonios.map((t, i) => (
+          <div
+            key={i}
+            className={styles.testimonio}
+            style={{
+              transform: `translateX(${100 * (i - actual)}%)`,
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: "100%",
+              opacity: i === actual ? 1 : 0,
+              zIndex: i === actual ? 2 : 1,
+            }}
+          >
+            <p>{t.texto}</p>
+            <span className={styles.autor}>- {t.autor}</span>
+          </div>
+        ))}
       </div>
     </section>
   );
