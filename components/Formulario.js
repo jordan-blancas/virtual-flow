@@ -120,16 +120,17 @@ export default function Formulario() {
                 className="sm:col-span-2 p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
               />
               <PhoneInput
-                country={'pe'}
-                value={telefono}
-                onChange={(phone) => setTelefono(phone)}
-                inputProps={{
-                  name: 'telefono',
-                  required: true,
-                }}
-                containerClass="w-full"
-                inputClass="!w-full !h-[48px] !rounded !border !border-gray-300 focus:!outline-none focus:!ring-2 focus:!ring-indigo-400"
-              />
+  country={'pe'}
+  value={telefono}
+  onChange={(phone) => setTelefono(phone)}
+  inputProps={{
+    name: 'telefono',
+    required: true,
+  }}
+  containerClass="w-full"
+  inputClass="!w-full !h-[48px] !rounded !border !border-gray-300 focus:!outline-none focus:!ring-2 focus:!ring-indigo-400"
+/>
+
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
