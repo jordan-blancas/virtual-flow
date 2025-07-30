@@ -7,3 +7,9 @@ body {
 }
 
 
+.react-tel-input .flag-dropdown {
+  height: 48px !important;
+  display: flex;
+  align-items: center;
+  padding-left: 0.75rem !important; /* Tailwind's px-3 */
+}
