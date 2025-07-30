@@ -128,7 +128,9 @@ export default function Formulario() {
     required: true,
   }}
   containerClass="w-full"
-  inputClass="!w-full !h-[48px] !rounded !border !border-gray-300 focus:!outline-none focus:!ring-2 focus:!ring-indigo-400"
+  inputClass="!w-full !h-[48px] !rounded-r !border !border-gray-300 focus:!outline-none focus:!ring-2 focus:!ring-indigo-400"
+  buttonClass="!bg-white !border !border-gray-300 !h-[48px] !rounded-l !px-3 flex items-center justify-center"
+  dropdownClass="!z-50"
 />
 
             </div>
