@@ -6,6 +6,27 @@ body {
   @apply font-sans bg-gray-100 text-gray-900;
 }
 
+@media (max-width: 768px) {
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  form input,
+  form select,
+  form textarea,
+  form button {
+    width: 100% !important;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+}
+
+
 select {
   appearance: none;
   -webkit-appearance: none;
