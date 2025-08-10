@@ -39,8 +39,3 @@ export default async function handler(req, res) {
   }
 }
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("Enviando formulario..."); // <-- Agrega esto
-  // ...resto del código
-};
