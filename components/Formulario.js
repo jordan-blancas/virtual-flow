@@ -42,8 +42,11 @@ export default function Formulario() {
     const form = e.target;
     const name = form.nombre.value;
     const email = form.email.value;
-    const date = form.fecha.value;
-    const hour = form.hora.value;
+    // Usa los estados directamente:
+    // const date = form.fecha.value; // ❌ Esto ya no existe
+    // const hour = form.hora.value;  // ❌ Esto ya no existe
+    const date = fecha;
+    const hour = hora;
 
     const fechaCompleta = new Date(`${date}T${hour}`);
     const ahora = new Date();
