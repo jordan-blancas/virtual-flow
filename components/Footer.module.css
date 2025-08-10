@@ -38,6 +38,13 @@
   margin-top: 1rem;
 }
 
+.copyrightSmall {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  margin-top: 1rem;
+  text-align: center;
+}
+
 .socials {
   display: flex;
   justify-content: center;
