@@ -4,16 +4,20 @@ import styles from "./Testimonios.module.css";
 
 const testimonios = [
   {
-    texto: "Excelente servicio, muy profesional y rápido. ¡Repetiré sin duda!",
-    autor: "Ana M.",
+    texto: "Comunidad online y marketplace para emprendedores culturales",
+    autor: "Elite Cultural",
   },
   {
-    texto: "Me ayudaron a resolver mi problema en minutos. Muy recomendado.",
-    autor: "Carlos P.",
+    texto: "Plataforma para gestión de gimnasios y comunidad online",
+    autor: "Fitbase.Club",
   },
   {
-    texto: "Atención personalizada y resultados efectivos. ¡Gracias!",
-    autor: "Lucía G.",
+    texto: "Plataforma de facturación electrónica y gestión de restaurantes.",
+    autor: "Mikuy.Club",
+  },
+  {
+    texto: "Comunidad online de aprendizaje colaborativo.",
+    autor: "Polimatas.Club",
   },
 ];
 
@@ -29,7 +33,7 @@ export default function Testimonios() {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>Testimonios</h2>
+      <h2 className={styles.title}>Proyectos realizados</h2>
       <div className={styles.slider}>
         {testimonios.map((t, i) => (
           <div
