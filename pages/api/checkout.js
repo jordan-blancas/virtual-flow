@@ -14,8 +14,8 @@ export default async function handler(req, res) {
       payment_method_types: ['card'],
       line_items: [
         {
-          // Reemplaza con el ID de tu precio creado en Stripe
-          price: 'price_1RoxobITly8YghZ7Hf5o8knM',
+          // Reemplaza con el ID de tu precio creado en Stripe (PRODUCCIÓN)
+          price: 'price_1RoxobITly8YghZ7Hf5o8knM', // ← Cambia aquí por tu nuevo ID de precio real
           quantity: 1,
         },
       ],
