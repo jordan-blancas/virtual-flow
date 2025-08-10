@@ -1,13 +1,16 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { Listbox } from "@headlessui/react";
 
 export default function Formulario() {
   const [enviado, setEnviado] = useState(false);
   const [telefono, setTelefono] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
+  const [fecha, setFecha] = useState("");
+  const [hora, setHora] = useState("");
 
   useEffect(() => {
     const fridays = [];
@@ -136,31 +139,59 @@ export default function Formulario() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <select
-                required
-                name="fecha"
-                className="p-3 rounded border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              >
-                <option value="">Selecciona un viernes</option>
-                {availableDates.map((d) => (
-                  <option key={d.value} value={d.value}>
-                    {d.label}
-                  </option>
-                ))}
-              </select>
+              {/* Fecha personalizada */}
+              <Listbox value={fecha} onChange={setFecha}>
+                <div className="relative">
+                  <Listbox.Button className="w-full p-3 rounded border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-left">
+                    {fecha
+                      ? availableDates.find((d) => d.value === fecha)?.label
+                      : "Selecciona un viernes"}
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded shadow-lg">
+                    {availableDates.map((d) => (
+                      <Listbox.Option
+                        key={d.value}
+                        value={d.value}
+                        as={Fragment}
+                      >
+                        {({ active, selected }) => (
+                          <li
+                            className={`cursor-pointer select-none p-3 ${
+                              active ? "bg-indigo-100" : ""
+                            } ${selected ? "font-semibold" : ""}`}
+                          >
+                            {d.label}
+                          </li>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
 
-              <select
-                required
-                name="hora"
-                className="p-3 rounded border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              >
-                <option value="">Hora disponible</option>
-                <option value="09:00">09:00</option>
-                <option value="10:00">10:00</option>
-                <option value="16:00">16:00</option>
-                <option value="17:00">17:00</option>
-                <option value="18:00">18:00</option>
-              </select>
+              {/* Hora personalizada */}
+              <Listbox value={hora} onChange={setHora}>
+                <div className="relative">
+                  <Listbox.Button className="w-full p-3 rounded border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-left">
+                    {hora || "Hora disponible"}
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded shadow-lg">
+                    {["09:00", "10:00", "16:00", "17:00", "18:00"].map((h) => (
+                      <Listbox.Option key={h} value={h} as={Fragment}>
+                        {({ active, selected }) => (
+                          <li
+                            className={`cursor-pointer select-none p-3 ${
+                              active ? "bg-indigo-100" : ""
+                            } ${selected ? "font-semibold" : ""}`}
+                          >
+                            {h}
+                          </li>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              </Listbox>
             </div>
 
             <textarea
