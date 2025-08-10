@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       line_items: [
         {
           // Reemplaza con el ID de tu precio creado en Stripe
-          price: 'price_1RoyCXITly8YghZ7aF7LYixX',
+          price: 'price_1RoxobITly8YghZ7Hf5o8knM',
           quantity: 1,
         },
       ],
