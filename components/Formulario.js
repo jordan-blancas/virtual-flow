@@ -98,7 +98,6 @@ export default function Formulario() {
               />
             </div>
             <CalendarioVisual fecha={fecha} setFecha={setFecha} hora={hora} setHora={setHora} />
-            <CalendarioReserva fecha={fecha} setFecha={setFecha} hora={hora} setHora={setHora} />
             <textarea
               name="mensaje"
               rows={4}
