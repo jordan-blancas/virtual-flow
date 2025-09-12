@@ -37,7 +37,7 @@ export default function CalendarioVisual({ fecha, setFecha, hora, setHora }) {
           <CalendarDaysIcon className="w-5 h-5 text-indigo-600" />
           {fecha ? fecha : "Elegir fecha"}
         </Popover.Button>
-        <Popover.Panel className="absolute z-10 mt-2 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-xl shadow-lg p-4">
+        <Popover.Panel className="absolute z-10 mt-2 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-xl shadow-lg p-4 min-w-[320px]">
           <DayPicker
             mode="single"
             locale={es}
@@ -51,29 +51,32 @@ export default function CalendarioVisual({ fecha, setFecha, hora, setHora }) {
             disabled={(date) => !isAvailable(date)}
             showOutsideDays
           />
+          <div className="mt-4">
+            <p className="text-xs text-gray-500 mb-2 text-center">Las horas disponibles dependen de la agenda del equipo. Selecciona una fecha para ver los horarios habilitados.</p>
+            {fecha && (
+              <div>
+                <label className="block font-semibold mb-2 text-center">Selecciona una hora:</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {horasDisponibles.map((h) => (
+                    <button
+                      key={h}
+                      type="button"
+                      className={`w-full px-4 py-2 rounded border transition font-medium ${
+                        hora === h
+                          ? "bg-indigo-600 text-white border-indigo-600"
+                          : "bg-white text-gray-800 border-gray-300 hover:bg-indigo-50"
+                      }`}
+                      onClick={() => setHora(h)}
+                    >
+                      {h}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </Popover.Panel>
       </Popover>
-      {fecha && (
-        <div className="mt-4 w-full flex flex-col items-center">
-          <label className="block font-semibold mb-2 text-center">Selecciona una hora:</label>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {horasDisponibles.map((h) => (
-              <button
-                key={h}
-                type="button"
-                className={`px-4 py-2 rounded border transition font-medium ${
-                  hora === h
-                    ? "bg-indigo-600 text-white border-indigo-600"
-                    : "bg-white text-gray-800 border-gray-300 hover:bg-indigo-50"
-                }`}
-                onClick={() => setHora(h)}
-              >
-                {h}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
