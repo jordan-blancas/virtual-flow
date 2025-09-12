@@ -12,6 +12,7 @@ export default function CalendarioVisual({ fecha, setFecha, hora, setHora }) {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [resumen, setResumen] = useState("");
   const horasRef = useRef(null);
+  const topRef = useRef(null);
   // Utilidad para crear fecha local (no UTC)
   function parseLocalDate(str) {
     const [year, month, day] = str.split("-").map(Number);
@@ -40,28 +41,37 @@ export default function CalendarioVisual({ fecha, setFecha, hora, setHora }) {
     }
   }, [fecha]);
 
+  // Scroll hacia arriba tras guardar
+  const scrollToTop = () => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   // Resumen tras confirmar
-  useEffect(() => {
-    if (!popoverOpen && fecha && hora) {
-      // Formato de fecha largo en español
+  // Actualizar resumen cada vez que se guarda
+  const guardarSeleccion = () => {
+    if (fecha && hora) {
       const dateObj = new Date(fecha + 'T00:00:00');
       const fechaLarga = dateObj.toLocaleDateString('es-ES', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       });
       setResumen(`Has seleccionado: ${fechaLarga.charAt(0).toUpperCase() + fechaLarga.slice(1)} a las ${hora}h`);
+      setPopoverOpen(false);
+      setTimeout(scrollToTop, 300);
     }
-  }, [popoverOpen, fecha, hora]);
+  };
 
   return (
-    <div className="mb-6 flex flex-col items-center">
+    <div className="mb-6 flex flex-col items-center" ref={topRef}>
       <label className="block font-semibold mb-2 text-center">Selecciona fecha y hora:</label>
       <Popover className="relative w-full flex flex-col items-center" open={popoverOpen} onOpenChange={setPopoverOpen}>
         <Popover.Button
           className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded shadow hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          onClick={() => setPopoverOpen(!popoverOpen)}
+          onClick={() => setPopoverOpen(true)}
         >
           <CalendarDaysIcon className="w-5 h-5 text-indigo-600" />
-          {fecha && hora ? `${fecha} - ${hora}` : fecha ? fecha : "Elegir fecha"}
+          {fecha && hora ? `${fecha} - ${hora}h` : fecha ? fecha : "Elegir fecha"}
         </Popover.Button>
         {popoverOpen && (
           <Popover.Panel className="absolute z-10 mt-2 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-xl shadow-lg p-4 min-w-[320px]">
@@ -95,17 +105,17 @@ export default function CalendarioVisual({ fecha, setFecha, hora, setHora }) {
                         }`}
                         onClick={() => setHora(h)}
                       >
-                        {h}
+                        {h}h
                       </button>
                     ))}
                   </div>
                   {hora && (
                     <button
                       className="mt-4 w-full bg-indigo-600 text-white font-semibold py-2 rounded hover:bg-indigo-500 transition"
-                      onClick={() => setPopoverOpen(false)}
+                      onClick={guardarSeleccion}
                       type="button"
                     >
-                      Confirmar selección
+                      Guardar fecha y hora
                     </button>
                   )}
                 </div>
