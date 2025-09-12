@@ -6,6 +6,7 @@ import { useState } from "react";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import CalendarioReserva from "./CalendarioReserva";
+import CalendarioVisual from "./CalendarioVisual";
 
 export default function Formulario() {
   const [telefono, setTelefono] = useState("");
@@ -96,6 +97,7 @@ export default function Formulario() {
                 dropdownClass="!z-50"
               />
             </div>
+            <CalendarioVisual fecha={fecha} setFecha={setFecha} />
             <CalendarioReserva fecha={fecha} setFecha={setFecha} hora={hora} setHora={setHora} />
             <textarea
               name="mensaje"
