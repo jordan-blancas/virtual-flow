@@ -97,7 +97,7 @@ export default function Formulario() {
                 dropdownClass="!z-50"
               />
             </div>
-            <CalendarioVisual fecha={fecha} setFecha={setFecha} />
+            <CalendarioVisual fecha={fecha} setFecha={setFecha} hora={hora} setHora={setHora} />
             <CalendarioReserva fecha={fecha} setFecha={setFecha} hora={hora} setHora={setHora} />
             <textarea
               name="mensaje"
