@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { useState } from "react";
 import PhoneInput from 'react-phone-input-2';
@@ -16,7 +17,7 @@ export default function Formulario() {
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState("");
   const [enviado, setEnviado] = useState(false);
-      const date = fecha;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -24,21 +25,17 @@ export default function Formulario() {
     const email = form.email.value;
     const date = fecha;
     const hour = hora;
-        return;
     const fechaCompleta = new Date(`${date}T${hour}`);
     const ahora = new Date();
-      const soloNumeros = telefono.replace(/\D/g, '');
     if (fechaCompleta <= ahora) {
       alert("La fecha y hora deben ser futuras.");
       return;
     }
-
     const soloNumeros = telefono.replace(/\D/g, '');
     if (!telefono || soloNumeros.length < 8) {
       alert("Por favor, ingresa un número de teléfono válido con al menos 8 dígitos.");
       return;
     }
-        });
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
@@ -56,7 +53,7 @@ export default function Formulario() {
       alert("Ocurrió un error al procesar el pago.");
     }
   };
-  >
+
   return (
     <section id="formulario" className="py-20 px-4 bg-white text-gray-800">
       <motion.div
@@ -126,3 +123,4 @@ export default function Formulario() {
       </motion.div>
     </section>
   );
+}
