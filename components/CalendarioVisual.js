@@ -43,7 +43,12 @@ export default function CalendarioVisual({ fecha, setFecha, hora, setHora }) {
   // Resumen tras confirmar
   useEffect(() => {
     if (!popoverOpen && fecha && hora) {
-      setResumen(`Has seleccionado: ${fecha} a las ${hora}`);
+      // Formato de fecha largo en español
+      const dateObj = new Date(fecha + 'T00:00:00');
+      const fechaLarga = dateObj.toLocaleDateString('es-ES', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      setResumen(`Has seleccionado: ${fechaLarga.charAt(0).toUpperCase() + fechaLarga.slice(1)} a las ${hora}h`);
     }
   }, [popoverOpen, fecha, hora]);
 
