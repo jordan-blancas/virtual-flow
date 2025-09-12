@@ -1,10 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import CalendarioReserva from "./CalendarioReserva";
 
 import { motion } from "framer-motion";
 import { useState } from "react";
