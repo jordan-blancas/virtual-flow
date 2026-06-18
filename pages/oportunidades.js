@@ -522,7 +522,7 @@ export default function OportunidadesPage() {
                             value={String(value)}
                             checked={formData[skill.name] === String(value)}
                             onChange={handleChange}
-                            required
+                            required={value === 1}
                           />
                           <label htmlFor={id}>{value}</label>
                         </div>
@@ -549,7 +549,7 @@ export default function OportunidadesPage() {
                             value={opcion}
                             checked={formData[item.name] === opcion}
                             onChange={handleChange}
-                            required
+                            required={idx === 0}
                           />
                           <label htmlFor={id}>{opcion}</label>
                         </div>
@@ -916,7 +916,11 @@ export default function OportunidadesPage() {
         }
 
         .vfo-radio-h input[type="radio"] {
-          display: none;
+          position: absolute;
+          opacity: 0;
+          width: 1px;
+          height: 1px;
+          pointer-events: none;
         }
 
         .vfo-radio-h label {
