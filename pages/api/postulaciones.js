@@ -46,6 +46,8 @@ export default async function handler(req, res) {
     const nivel_after_effects = toInt(body.nivel_after_effects);
     const nivel_canva = toInt(body.nivel_canva);
     const nivel_photoshop = toInt(body.nivel_photoshop);
+    const nivel_discord = toInt(body.nivel_discord);
+    const nivel_telegram = toInt(body.nivel_telegram);
     const nivel_redes = toInt(body.nivel_redes);
     const nivel_foto_reflex = toInt(body.nivel_foto_reflex);
 
@@ -83,6 +85,8 @@ export default async function handler(req, res) {
       nivel_after_effects,
       nivel_canva,
       nivel_photoshop,
+      nivel_discord,
+      nivel_telegram,
       nivel_redes,
       nivel_foto_reflex,
     ];
@@ -128,6 +132,8 @@ export default async function handler(req, res) {
       nivel_after_effects,
       nivel_canva,
       nivel_photoshop,
+      nivel_discord,
+      nivel_telegram,
       nivel_video,
       nivel_diseno,
       nivel_redes,

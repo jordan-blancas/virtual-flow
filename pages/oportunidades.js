@@ -20,6 +20,8 @@ export default function OportunidadesPage() {
     nivel_after_effects: "",
     nivel_canva: "",
     nivel_photoshop: "",
+    nivel_discord: "",
+    nivel_telegram: "",
     nivel_redes: "",
     nivel_foto_reflex: "",
     criterio_1: "",
@@ -75,6 +77,14 @@ export default function OportunidadesPage() {
       {
         name: "nivel_photoshop",
         label: "Photoshop",
+      },
+      {
+        name: "nivel_discord",
+        label: "Discord",
+      },
+      {
+        name: "nivel_telegram",
+        label: "Telegram",
       },
       {
         name: "nivel_redes",
@@ -180,6 +190,8 @@ export default function OportunidadesPage() {
         nivel_after_effects: "",
         nivel_canva: "",
         nivel_photoshop: "",
+        nivel_discord: "",
+        nivel_telegram: "",
         nivel_redes: "",
         nivel_foto_reflex: "",
         criterio_1: "",
@@ -349,7 +361,7 @@ export default function OportunidadesPage() {
                   id="apellidos"
                   name="apellidos"
                   type="text"
-                  placeholder="Ej: Blancas Sanchez"
+                  placeholder="Ej: Gonzales López"
                   value={formData.apellidos}
                   onChange={handleChange}
                   required
@@ -362,7 +374,7 @@ export default function OportunidadesPage() {
                   id="nombres"
                   name="nombres"
                   type="text"
-                  placeholder="Ej: Jordan Darwin"
+                  placeholder="Ej: Pedro Luis"
                   value={formData.nombres}
                   onChange={handleChange}
                   required
@@ -504,8 +516,12 @@ export default function OportunidadesPage() {
               </div>
 
               <div className="vfo-form-section">
-                Autoevaluacion de habilidades - 1 (nulo) a 5 (experto)
+                Autoevaluacion de habilidades - De 1 (nulo) a 5 (experto)
               </div>
+              <p className="vfo-habilidades-help">
+                Usa esta escala en cada habilidad: 1 = nunca lo he usado, 2 = basico,
+                3 = intermedio, 4 = avanzado, 5 = experto.
+              </p>
 
               {habilidades.map((skill) => (
                 <div className="vfo-field" key={skill.name}>
@@ -844,6 +860,13 @@ export default function OportunidadesPage() {
           padding: 8px 14px;
           border-radius: 0 6px 6px 0;
           margin: 28px 0 16px;
+        }
+
+        .vfo-habilidades-help {
+          margin: -4px 0 14px;
+          font-size: 13px;
+          color: #475569;
+          line-height: 1.5;
         }
 
         .vfo-field {

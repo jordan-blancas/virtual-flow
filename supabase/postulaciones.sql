@@ -16,6 +16,8 @@ create table if not exists public.postulaciones (
   nivel_after_effects smallint not null default 0,
   nivel_canva smallint not null default 0,
   nivel_photoshop smallint not null default 0,
+  nivel_discord smallint not null default 0,
+  nivel_telegram smallint not null default 0,
   nivel_video smallint not null,
   nivel_diseno smallint not null,
   nivel_redes smallint not null,
@@ -48,6 +50,12 @@ alter table if exists public.postulaciones
 
 alter table if exists public.postulaciones
   add column if not exists nivel_photoshop smallint not null default 0;
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_discord smallint not null default 0;
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_telegram smallint not null default 0;
 
 create index if not exists idx_postulaciones_puntaje_total
   on public.postulaciones (puntaje_total desc);
