@@ -60,7 +60,7 @@ export default function OportunidadesPage() {
       },
       {
         name: "nivel_premiere",
-        label: "Premiere",
+        label: "Adobe Premiere",
       },
       {
         name: "nivel_insta360",
@@ -68,7 +68,7 @@ export default function OportunidadesPage() {
       },
       {
         name: "nivel_after_effects",
-        label: "After Effects",
+        label: "Adobe After Effects",
       },
       {
         name: "nivel_canva",
@@ -76,7 +76,7 @@ export default function OportunidadesPage() {
       },
       {
         name: "nivel_photoshop",
-        label: "Photoshop",
+        label: "Adobe Photoshop",
       },
       {
         name: "nivel_discord",
