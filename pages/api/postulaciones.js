@@ -17,8 +17,14 @@ function toInt(value) {
 }
 
 export default async function handler(req, res) {
+  const requestId = `post-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Metodo no permitido" });
+    return res.status(405).json({
+      message: "Metodo no permitido",
+      requestId,
+      debug: { method: req.method },
+    });
   }
 
   try {
@@ -55,27 +61,42 @@ export default async function handler(req, res) {
     const acepto_campo = Boolean(body.acepto_campo);
     const acepto_datos = Boolean(body.acepto_datos);
 
-    if (
-      !apellidos ||
-      !nombres ||
-      !dni ||
-      !fecha_nacimiento_dia ||
-      !fecha_nacimiento_mes ||
-      !fecha_nacimiento_anio ||
-      !correo ||
-      !celular ||
-      !direccion_actual ||
-      !carrera ||
-      !ciclo ||
-      !criterio_1 ||
-      !criterio_2 ||
-      !criterio_3
-    ) {
-      return res.status(400).json({ message: "Faltan campos obligatorios" });
+    const requiredFields = {
+      apellidos,
+      nombres,
+      dni,
+      fecha_nacimiento_dia,
+      fecha_nacimiento_mes,
+      fecha_nacimiento_anio,
+      correo,
+      celular,
+      direccion_actual,
+      carrera,
+      ciclo,
+      criterio_1,
+      criterio_2,
+      criterio_3,
+    };
+    const missingFields = Object.entries(requiredFields)
+      .filter(([, value]) => !value)
+      .map(([key]) => key);
+
+    if (missingFields.length > 0) {
+      console.warn("[postulaciones] faltan campos", { requestId, missingFields });
+      return res.status(400).json({
+        message: "Faltan campos obligatorios",
+        requestId,
+        debug: { missingFields },
+      });
     }
 
     if (!/^\d{8}$/.test(dni)) {
-      return res.status(400).json({ message: "El DNI debe tener 8 digitos" });
+      console.warn("[postulaciones] dni invalido", { requestId, dniLength: dni.length });
+      return res.status(400).json({
+        message: "El DNI debe tener 8 digitos",
+        requestId,
+        debug: { dniLength: dni.length },
+      });
     }
 
     const niveles = [
@@ -92,11 +113,52 @@ export default async function handler(req, res) {
     ];
     const nivelesValidos = niveles.every((n) => Number.isInteger(n) && n >= 1 && n <= 5);
     if (!nivelesValidos) {
-      return res.status(400).json({ message: "Los niveles deben estar entre 1 y 5" });
+      console.warn("[postulaciones] niveles invalidos", { requestId, niveles });
+      return res.status(400).json({
+        message: "Los niveles deben estar entre 1 y 5",
+        requestId,
+        debug: { niveles },
+      });
     }
 
     if (!acepto_horario || !acepto_campo || !acepto_datos) {
-      return res.status(400).json({ message: "Debes aceptar todas las condiciones" });
+      console.warn("[postulaciones] condiciones no aceptadas", {
+        requestId,
+        acepto_horario,
+        acepto_campo,
+        acepto_datos,
+      });
+      return res.status(400).json({
+        message: "Debes aceptar todas las condiciones",
+        requestId,
+        debug: { acepto_horario, acepto_campo, acepto_datos },
+      });
+    }
+
+    console.info("[postulaciones] intento de insercion", {
+      requestId,
+      correo,
+      dniLength: dni.length,
+      habilidadesCount: niveles.length,
+    });
+
+    if (
+      !apellidos ||
+      !nombres ||
+      !dni ||
+      !fecha_nacimiento_dia ||
+      !fecha_nacimiento_mes ||
+      !fecha_nacimiento_anio ||
+      !correo ||
+      !celular ||
+      !direccion_actual ||
+      !carrera ||
+      !ciclo ||
+      !criterio_1 ||
+      !criterio_2 ||
+      !criterio_3
+    ) {
+      return res.status(400).json({ message: "Faltan campos obligatorios", requestId });
     }
 
     const puntaje_habilidades = niveles.reduce((total, value) => total + value, 0);
@@ -147,17 +209,44 @@ export default async function handler(req, res) {
     });
 
     if (error) {
-      console.error("Error al guardar en Supabase:", error);
-      return res.status(500).json({ message: "No se pudo guardar la postulacion" });
+      console.error("[postulaciones] error Supabase", {
+        requestId,
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      return res.status(500).json({
+        message: "No se pudo guardar la postulacion",
+        requestId,
+        debug: {
+          source: "supabase",
+          code: error.code || null,
+          details: error.details || null,
+          hint: error.hint || null,
+        },
+      });
     }
 
     return res.status(200).json({
       ok: true,
       message: "Postulacion enviada correctamente",
       puntaje_total,
+      requestId,
     });
   } catch (error) {
-    console.error("Error en /api/postulaciones:", error);
-    return res.status(500).json({ message: "Error interno del servidor" });
+    console.error("[postulaciones] error interno", {
+      requestId,
+      message: error?.message,
+      stack: error?.stack,
+    });
+    return res.status(500).json({
+      message: "Error interno del servidor",
+      requestId,
+      debug: {
+        source: "catch",
+        error: error?.message || "Sin detalle",
+      },
+    });
   }
 }
