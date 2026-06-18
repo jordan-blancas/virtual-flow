@@ -11,12 +11,17 @@ export default function OportunidadesPage() {
     fecha_nacimiento_anio: "",
     correo: "",
     celular: "",
+    direccion_actual: "",
     carrera: "",
     ciclo: "",
-    nivel_video: "",
-    nivel_diseno: "",
+    nivel_capcut: "",
+    nivel_premiere: "",
+    nivel_insta360: "",
+    nivel_after_effects: "",
+    nivel_canva: "",
+    nivel_photoshop: "",
     nivel_redes: "",
-    nivel_foto: "",
+    nivel_foto_reflex: "",
     criterio_1: "",
     criterio_2: "",
     criterio_3: "",
@@ -48,20 +53,36 @@ export default function OportunidadesPage() {
   const habilidades = useMemo(
     () => [
       {
-        name: "nivel_video",
-        label: "Edicion de video (CapCut, Premiere, DaVinci, etc.)",
+        name: "nivel_capcut",
+        label: "CapCut",
       },
       {
-        name: "nivel_diseno",
-        label: "Diseno grafico (Canva, Photoshop, Illustrator, etc.)",
+        name: "nivel_premiere",
+        label: "Premiere",
+      },
+      {
+        name: "nivel_insta360",
+        label: "Insta360",
+      },
+      {
+        name: "nivel_after_effects",
+        label: "After Effects",
+      },
+      {
+        name: "nivel_canva",
+        label: "Canva",
+      },
+      {
+        name: "nivel_photoshop",
+        label: "Photoshop",
       },
       {
         name: "nivel_redes",
         label: "Gestion de redes sociales (Instagram, TikTok, Facebook)",
       },
       {
-        name: "nivel_foto",
-        label: "Fotografia",
+        name: "nivel_foto_reflex",
+        label: "Fotografia con camara reflex o mirrorless",
       },
     ],
     []
@@ -150,12 +171,17 @@ export default function OportunidadesPage() {
         fecha_nacimiento_anio: "",
         correo: "",
         celular: "",
+        direccion_actual: "",
         carrera: "",
         ciclo: "",
-        nivel_video: "",
-        nivel_diseno: "",
+        nivel_capcut: "",
+        nivel_premiere: "",
+        nivel_insta360: "",
+        nivel_after_effects: "",
+        nivel_canva: "",
+        nivel_photoshop: "",
         nivel_redes: "",
-        nivel_foto: "",
+        nivel_foto_reflex: "",
         criterio_1: "",
         criterio_2: "",
         criterio_3: "",
@@ -354,7 +380,9 @@ export default function OportunidadesPage() {
                   onChange={handleChange}
                   minLength={8}
                   maxLength={8}
-                  pattern="\\d{8}"
+                  inputMode="numeric"
+                  pattern="[0-9]{8}"
+                  title="Ingresa exactamente 8 digitos numericos"
                   required
                 />
               </div>
@@ -397,7 +425,7 @@ export default function OportunidadesPage() {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Anio</option>
+                    <option value="">Año</option>
                     {Array.from({ length: 18 }).map((_, i) => {
                       const y = String(2007 - i);
                       return (
@@ -437,6 +465,19 @@ export default function OportunidadesPage() {
               </div>
 
               <div className="vfo-field">
+                <label htmlFor="direccion_actual">Direccion actual *</label>
+                <input
+                  id="direccion_actual"
+                  name="direccion_actual"
+                  type="text"
+                  placeholder="Ej: Av. Huancavelica 123, Huancayo"
+                  value={formData.direccion_actual}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="vfo-field">
                 <label htmlFor="carrera">Carrera y universidad/instituto *</label>
                 <input
                   id="carrera"
@@ -450,7 +491,7 @@ export default function OportunidadesPage() {
               </div>
 
               <div className="vfo-field">
-                <label htmlFor="ciclo">Ciclo o anio actual *</label>
+                <label htmlFor="ciclo">Ciclo o año actual *</label>
                 <input
                   id="ciclo"
                   name="ciclo"

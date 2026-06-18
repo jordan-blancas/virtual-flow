@@ -7,8 +7,15 @@ create table if not exists public.postulaciones (
   fecha_nacimiento varchar(30) not null,
   correo varchar(150) not null,
   celular varchar(20) not null,
+  direccion_actual varchar(200) not null default '',
   carrera varchar(150) not null,
   ciclo varchar(50) not null,
+  nivel_capcut smallint not null default 0,
+  nivel_premiere smallint not null default 0,
+  nivel_insta360 smallint not null default 0,
+  nivel_after_effects smallint not null default 0,
+  nivel_canva smallint not null default 0,
+  nivel_photoshop smallint not null default 0,
   nivel_video smallint not null,
   nivel_diseno smallint not null,
   nivel_redes smallint not null,
@@ -20,6 +27,27 @@ create table if not exists public.postulaciones (
   puntaje_criterio smallint not null,
   puntaje_total smallint not null
 );
+
+alter table if exists public.postulaciones
+  add column if not exists direccion_actual varchar(200) not null default '';
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_capcut smallint not null default 0;
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_premiere smallint not null default 0;
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_insta360 smallint not null default 0;
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_after_effects smallint not null default 0;
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_canva smallint not null default 0;
+
+alter table if exists public.postulaciones
+  add column if not exists nivel_photoshop smallint not null default 0;
 
 create index if not exists idx_postulaciones_puntaje_total
   on public.postulaciones (puntaje_total desc);

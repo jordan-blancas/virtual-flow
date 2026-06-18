@@ -32,6 +32,7 @@ export default async function handler(req, res) {
     const fecha_nacimiento_anio = sanitizeText(body.fecha_nacimiento_anio);
     const correo = sanitizeText(body.correo).toLowerCase();
     const celular = sanitizeText(body.celular);
+    const direccion_actual = sanitizeText(body.direccion_actual);
     const carrera = sanitizeText(body.carrera);
     const ciclo = sanitizeText(body.ciclo);
 
@@ -39,10 +40,14 @@ export default async function handler(req, res) {
     const criterio_2 = sanitizeText(body.criterio_2);
     const criterio_3 = sanitizeText(body.criterio_3);
 
-    const nivel_video = toInt(body.nivel_video);
-    const nivel_diseno = toInt(body.nivel_diseno);
+    const nivel_capcut = toInt(body.nivel_capcut);
+    const nivel_premiere = toInt(body.nivel_premiere);
+    const nivel_insta360 = toInt(body.nivel_insta360);
+    const nivel_after_effects = toInt(body.nivel_after_effects);
+    const nivel_canva = toInt(body.nivel_canva);
+    const nivel_photoshop = toInt(body.nivel_photoshop);
     const nivel_redes = toInt(body.nivel_redes);
-    const nivel_foto = toInt(body.nivel_foto);
+    const nivel_foto_reflex = toInt(body.nivel_foto_reflex);
 
     const acepto_horario = Boolean(body.acepto_horario);
     const acepto_campo = Boolean(body.acepto_campo);
@@ -57,6 +62,7 @@ export default async function handler(req, res) {
       !fecha_nacimiento_anio ||
       !correo ||
       !celular ||
+      !direccion_actual ||
       !carrera ||
       !ciclo ||
       !criterio_1 ||
@@ -70,7 +76,16 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "El DNI debe tener 8 digitos" });
     }
 
-    const niveles = [nivel_video, nivel_diseno, nivel_redes, nivel_foto];
+    const niveles = [
+      nivel_capcut,
+      nivel_premiere,
+      nivel_insta360,
+      nivel_after_effects,
+      nivel_canva,
+      nivel_photoshop,
+      nivel_redes,
+      nivel_foto_reflex,
+    ];
     const nivelesValidos = niveles.every((n) => Number.isInteger(n) && n >= 1 && n <= 5);
     if (!nivelesValidos) {
       return res.status(400).json({ message: "Los niveles deben estar entre 1 y 5" });
@@ -80,12 +95,19 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Debes aceptar todas las condiciones" });
     }
 
-    const puntaje_habilidades = nivel_video + nivel_diseno + nivel_redes + nivel_foto;
+    const puntaje_habilidades = niveles.reduce((total, value) => total + value, 0);
     const puntaje_criterio =
       (criterio_1 === RESPUESTAS_CORRECTAS.criterio_1 ? 1 : 0) +
       (criterio_2 === RESPUESTAS_CORRECTAS.criterio_2 ? 1 : 0) +
       (criterio_3 === RESPUESTAS_CORRECTAS.criterio_3 ? 1 : 0);
     const puntaje_total = puntaje_habilidades + puntaje_criterio;
+
+    // Compatibilidad con esquema inicial de 4 habilidades
+    const nivel_video = Math.round(
+      (nivel_capcut + nivel_premiere + nivel_insta360 + nivel_after_effects) / 4
+    );
+    const nivel_diseno = Math.round((nivel_canva + nivel_photoshop) / 2);
+    const nivel_foto = nivel_foto_reflex;
 
     const fecha_nacimiento = `${fecha_nacimiento_dia} ${fecha_nacimiento_mes} ${fecha_nacimiento_anio}`;
 
@@ -97,8 +119,15 @@ export default async function handler(req, res) {
       fecha_nacimiento,
       correo,
       celular,
+      direccion_actual,
       carrera,
       ciclo,
+      nivel_capcut,
+      nivel_premiere,
+      nivel_insta360,
+      nivel_after_effects,
+      nivel_canva,
+      nivel_photoshop,
       nivel_video,
       nivel_diseno,
       nivel_redes,
