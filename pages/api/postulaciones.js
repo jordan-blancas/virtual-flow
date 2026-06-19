@@ -41,6 +41,7 @@ export default async function handler(req, res) {
     const direccion_actual = sanitizeText(body.direccion_actual);
     const carrera = sanitizeText(body.carrera);
     const ciclo = sanitizeText(body.ciclo);
+    const pretensiones_economicas = sanitizeText(body.pretensiones_economicas);
 
     const criterio_1 = sanitizeText(body.criterio_1);
     const criterio_2 = sanitizeText(body.criterio_2);
@@ -73,6 +74,7 @@ export default async function handler(req, res) {
       direccion_actual,
       carrera,
       ciclo,
+      pretensiones_economicas,
       criterio_1,
       criterio_2,
       criterio_3,
@@ -154,6 +156,7 @@ export default async function handler(req, res) {
       !direccion_actual ||
       !carrera ||
       !ciclo ||
+      !pretensiones_economicas ||
       !criterio_1 ||
       !criterio_2 ||
       !criterio_3
@@ -188,6 +191,7 @@ export default async function handler(req, res) {
       direccion_actual,
       carrera,
       ciclo,
+      pretensiones_economicas,
       nivel_capcut,
       nivel_premiere,
       nivel_insta360,

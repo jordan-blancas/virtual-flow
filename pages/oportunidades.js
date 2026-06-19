@@ -14,6 +14,7 @@ export default function OportunidadesPage() {
     direccion_actual: "",
     carrera: "",
     ciclo: "",
+    pretensiones_economicas: "",
     nivel_capcut: "",
     nivel_premiere: "",
     nivel_insta360: "",
@@ -171,6 +172,7 @@ export default function OportunidadesPage() {
       "direccion_actual",
       "carrera",
       "ciclo",
+      "pretensiones_economicas",
       "criterio_1",
       "criterio_2",
       "criterio_3",
@@ -263,6 +265,7 @@ export default function OportunidadesPage() {
         direccion_actual: "",
         carrera: "",
         ciclo: "",
+        pretensiones_economicas: "",
         nivel_capcut: "",
         nivel_premiere: "",
         nivel_insta360: "",
@@ -325,8 +328,8 @@ export default function OportunidadesPage() {
               <div className="vfo-meta-value">Medio tiempo</div>
             </div>
             <div className="vfo-meta-item">
-              <div className="vfo-meta-label">Remuneracion</div>
-              <div className="vfo-meta-value">S/ 600 / mes</div>
+              <div className="vfo-meta-label">Tipo de puesto</div>
+              <div className="vfo-meta-value">Medio tiempo creativo</div>
             </div>
             <div className="vfo-meta-item">
               <div className="vfo-meta-label">Reporta a</div>
@@ -599,6 +602,19 @@ export default function OportunidadesPage() {
                 />
               </div>
 
+              <div className="vfo-field">
+                <label htmlFor="pretensiones_economicas">Pretensiones económicas *</label>
+                <input
+                  id="pretensiones_economicas"
+                  name="pretensiones_economicas"
+                  type="text"
+                  placeholder="Ej: S/ 800 a S/ 1200 o según evaluación"
+                  value={formData.pretensiones_economicas}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
               <div className="vfo-form-section">
                 Autoevaluacion de habilidades - De 1 (nulo) a 5 (experto)
               </div>
@@ -713,31 +729,6 @@ export default function OportunidadesPage() {
               <button className="vfo-submit" type="submit" disabled={loading}>
                 {loading ? "Enviando..." : "Enviar postulacion"}
               </button>
-
-              <div className="vfo-debug-panel" aria-live="polite">
-                <div className="vfo-debug-title">Debug de envio</div>
-                <div className="vfo-debug-line">Estado: {debugInfo.stage}</div>
-                <div className="vfo-debug-line">Hora: {debugInfo.timestamp || "-"}</div>
-                <div className="vfo-debug-line">
-                  HTTP: {debugInfo.httpStatus ?? "-"} | Request ID: {debugInfo.requestId || "-"}
-                </div>
-                <div className="vfo-debug-line">
-                  Campos faltantes: {debugInfo.client?.missingFields?.length ?? 0}
-                </div>
-                <div className="vfo-debug-line">
-                  Habilidades completas: {debugInfo.client?.habilidadesCompletas ?? 0}/
-                  {debugInfo.client?.habilidadesTotales ?? 10}
-                </div>
-                {debugInfo.api?.message ? (
-                  <div className="vfo-debug-line">API mensaje: {debugInfo.api.message}</div>
-                ) : null}
-                {debugInfo.api?.debug ? (
-                  <pre className="vfo-debug-json">{JSON.stringify(debugInfo.api.debug, null, 2)}</pre>
-                ) : null}
-                {debugInfo.networkError ? (
-                  <div className="vfo-debug-line">Network error: {debugInfo.networkError}</div>
-                ) : null}
-              </div>
             </form>
           )}
         </section>
@@ -1150,45 +1141,6 @@ export default function OportunidadesPage() {
         .vfo-submit:disabled {
           opacity: 0.6;
           cursor: not-allowed;
-        }
-
-        .vfo-debug-panel {
-          margin-top: 12px;
-          border: 1px solid #cbd5e1;
-          background: #f8fafc;
-          border-radius: 8px;
-          padding: 12px;
-        }
-
-        .vfo-debug-title {
-          font-size: 12px;
-          font-weight: 700;
-          color: #1e293b;
-          margin-bottom: 6px;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-        }
-
-        .vfo-debug-line {
-          font-size: 12px;
-          color: #334155;
-          line-height: 1.5;
-        }
-
-        .vfo-debug-json {
-          margin-top: 8px;
-          margin-bottom: 0;
-          max-height: 220px;
-          overflow: auto;
-          font-size: 11px;
-          line-height: 1.45;
-          color: #0f172a;
-          background: #eef2f7;
-          border: 1px solid #dbe2ea;
-          border-radius: 6px;
-          padding: 8px;
-          white-space: pre-wrap;
-          word-break: break-word;
         }
 
         .vfo-success-box {

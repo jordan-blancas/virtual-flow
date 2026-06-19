@@ -10,6 +10,7 @@ create table if not exists public.postulaciones (
   direccion_actual varchar(200) not null default '',
   carrera varchar(150) not null,
   ciclo varchar(50) not null,
+  pretensiones_economicas varchar(120) not null default '',
   nivel_capcut smallint not null default 0,
   nivel_premiere smallint not null default 0,
   nivel_insta360 smallint not null default 0,
@@ -32,6 +33,9 @@ create table if not exists public.postulaciones (
 
 alter table if exists public.postulaciones
   add column if not exists direccion_actual varchar(200) not null default '';
+
+alter table if exists public.postulaciones
+  add column if not exists pretensiones_economicas varchar(120) not null default '';
 
 alter table if exists public.postulaciones
   add column if not exists nivel_capcut smallint not null default 0;
