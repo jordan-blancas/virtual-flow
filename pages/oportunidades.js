@@ -603,12 +603,12 @@ export default function OportunidadesPage() {
               </div>
 
               <div className="vfo-field">
-                <label htmlFor="pretensiones_economicas">Pretensiones económicas *</label>
+                <label htmlFor="pretensiones_economicas">Pretensión económica mensual *</label>
                 <input
                   id="pretensiones_economicas"
                   name="pretensiones_economicas"
                   type="text"
-                  placeholder="Ej: S/ 800 a S/ 1200 o según evaluación"
+                  placeholder="Ej: S/600"
                   value={formData.pretensiones_economicas}
                   onChange={handleChange}
                   required
