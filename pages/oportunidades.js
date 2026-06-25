@@ -314,8 +314,7 @@ export default function OportunidadesPage() {
           <div className="vfo-job-eyebrow">Convocatoria · Virtual Flow</div>
           <h1 className="vfo-job-title">Ejecutor Creativo</h1>
           <p className="vfo-job-subtitle">
-            Apoyo en produccion audiovisual y contenido digital para proyectos del
-            holding
+            Desarrollo de actividades en produccion audiovisual y contenido digital para nuestros clientes y holding
           </p>
 
           <div className="vfo-meta-grid">
@@ -325,11 +324,11 @@ export default function OportunidadesPage() {
             </div>
             <div className="vfo-meta-item">
               <div className="vfo-meta-label">Disponibilidad</div>
-              <div className="vfo-meta-value">Medio tiempo</div>
+              <div className="vfo-meta-value">Medio tiempo (24h semanales)</div>
             </div>
             <div className="vfo-meta-item">
               <div className="vfo-meta-label">Tipo de puesto</div>
-              <div className="vfo-meta-value">Medio tiempo creativo</div>
+              <div className="vfo-meta-value">Trabajo por objetivos</div>
             </div>
             <div className="vfo-meta-item">
               <div className="vfo-meta-label">Reporta a</div>
@@ -342,9 +341,9 @@ export default function OportunidadesPage() {
           <h2 className="vfo-section-title">Sobre el puesto</h2>
           <p>
             Buscamos un estudiante o profesional junior con perfil creativo para
-            apoyar la ejecucion de contenido audiovisual y digital de los
-            proyectos del holding (Elite Cultural, Marca Personal, Energetica
-            Labs, entre otros).
+            desarrollar la ejecución de contenido audiovisual y digital de los
+            proyectos del holding (Vatio, Elite Cultural, Energética
+            Labs, entre otros) y para los proyectos de nuestros clientes.
           </p>
         </section>
 
@@ -352,16 +351,16 @@ export default function OportunidadesPage() {
           <h2 className="vfo-section-title">Responsabilidades</h2>
           <ul className="vfo-list">
             <li>
-              Apoyar en la produccion y edicion de contenido audiovisual
+              Desarrollar la producción y edición de contenido audiovisual
               (filmaciones, podcast, redes sociales)
             </li>
             <li>
-              Ejecutar piezas graficas y de video segun lineamientos del
+              Ejecutar piezas gráficas y de video según lineamientos del
               Supervisor Creativo
             </li>
             <li>
               Asistir en filmaciones de campo (eventos, producciones
-              folcloricas, grabaciones de podcast)
+              folclóricas, grabaciones de podcast, etc.)
             </li>
             <li>
               Gestionar publicacion de contenido en redes sociales bajo
@@ -378,21 +377,21 @@ export default function OportunidadesPage() {
           <h2 className="vfo-section-title">Requisitos</h2>
           <ul className="vfo-list">
             <li>
-              Estudiante de Comunicacion Audiovisual, Diseno Grafico, Marketing
+              Estudiante de Comunicación Audiovisual, Diseño Gráfico, Marketing
               o carreras afines
             </li>
             <li>
-              Manejo de herramientas de edicion de video (CapCut, Premiere,
+              Manejo de herramientas de edición de video (CapCut, Premiere,
               DaVinci Resolve, o similar)
             </li>
             <li>
-              Manejo basico de diseno grafico (Canva, Photoshop o Illustrator)
+              Manejo básico de diseño gráfico (Canva, Photoshop o Illustrator)
             </li>
             <li>
               Disponibilidad para trabajo de campo en Huancayo / Jauja /
-              Concepcion / Chupaca
+              Concepción / Chupaca
             </li>
-            <li>Proactividad y capacidad de trabajo autonomo</li>
+            <li>Proactividad y capacidad de trabajo autónomo</li>
             <li>Manejo de redes sociales (Instagram, TikTok, Facebook)</li>
           </ul>
         </section>
@@ -401,9 +400,9 @@ export default function OportunidadesPage() {
           <h2 className="vfo-section-title">Deseable (no excluyente)</h2>
           <div className="vfo-deseable">
             <ul className="vfo-list vfo-list-tight">
-              <li>Experiencia previa en produccion de contenido cultural o educativo</li>
-              <li>Conocimiento basico de fotografia</li>
-              <li>Interes en temas de cultura, ciencia o tecnologia</li>
+              <li>Experiencia previa en producción de contenido cultural o educativo</li>
+              <li>Conocimiento básico de fotografía y filmación</li>
+              <li>Curiosidad en temas de cultura, fitness, ciencia o tecnología</li>
             </ul>
           </div>
         </section>
@@ -412,11 +411,11 @@ export default function OportunidadesPage() {
           <h2 className="vfo-section-title">Lo que ofrecemos</h2>
           <ul className="vfo-list">
             <li>
-              Experiencia real en un holding con proyectos en tecnologia,
-              energia, educacion y cultura
+              Experiencia real en un holding con proyectos en tecnología,
+              energía, educación y cultura
             </li>
             <li>Flexibilidad de horario (medio tiempo)</li>
-            <li>Aprendizaje directo en produccion audiovisual profesional</li>
+            <li>Aprendizaje directo en producción audiovisual profesional</li>
             <li>
               Posibilidad de crecimiento dentro del equipo conforme el holding
               escale
@@ -429,7 +428,7 @@ export default function OportunidadesPage() {
         </section>
 
         <section className="vfo-form-container" aria-label="Formulario de postulacion">
-          <h3 className="vfo-form-title">Formulario de postulacion</h3>
+          <h3 className="vfo-form-title">Formulario de postulación</h3>
           <p className="vfo-form-sub">Completa todos los campos obligatorios (*)</p>
 
           {submitState.type === "success" ? (
@@ -603,7 +602,7 @@ export default function OportunidadesPage() {
               </div>
 
               <div className="vfo-field">
-                <label htmlFor="pretensiones_economicas">Pretensión económica mensual *</label>
+                <label htmlFor="pretensiones_economicas">Pretensión económica mensual (para medio tiempo) *</label>
                 <input
                   id="pretensiones_economicas"
                   name="pretensiones_economicas"
