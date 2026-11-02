@@ -3,6 +3,7 @@ import Beneficios from "../components/Beneficios";
 import Proceso from "../components/Proceso";
 import Formulario from "../components/Formulario";
 import Testimonios from "../components/Testimonios";
+import Ecosistema from "../components/Ecosistema";
 import Footer from "../components/Footer";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <Proceso />
       <Formulario />
       <Testimonios />
+      <Ecosistema />
       <Footer />
     </>
   );
