@@ -182,7 +182,7 @@ export default function Formulario() {
               className={styles.submitButton}
               disabled={!agendaCargada || Boolean(agendaError) || !fecha || !hora || procesando}
             >
-              {procesando ? "Conectando con Stripe…" : "Continuar al pago"}
+              {procesando ? "Redirigiendo a la sección de pago…" : "Continuar al pago"}
               {!procesando && <span aria-hidden="true">↗</span>}
             </button>
             <p className={styles.disclaimer}>El horario queda confirmado únicamente cuando el pago se acredita.</p>

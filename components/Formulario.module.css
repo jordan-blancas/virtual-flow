@@ -686,6 +686,8 @@
 .title span {
   color: #fde047;
   background: linear-gradient(100deg, #fef08a 0%, #facc15 58%, #fb923c 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 
 .lead,
@@ -828,6 +830,13 @@
 
 .submitButton:hover:not(:disabled) {
   filter: brightness(1.05);
+}
+
+/* iOS amplía la página al enfocar campos con fuente menor a 16px */
+.field input,
+.field textarea,
+.phoneInput {
+  font-size: 16px !important;
 }
 
 .successPage {
