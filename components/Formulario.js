@@ -118,6 +118,10 @@ export default function Formulario() {
           <div className={styles.trustList}>
             <p><span className={styles.trustDot} /> Estudiamos tu negocio y detectamos dónde pierdes tiempo y dinero</p>
             <p><span className={styles.trustDot} /> Armamos tu Business Model Canvas</p>
+            <p><span className={styles.trustDot} /> Mapeamos tu proceso actual, de la primera consulta al cobro</p>
+            <p><span className={styles.trustDot} /> Priorizamos qué automatizar primero según su retorno</p>
+            <p><span className={styles.trustDot} /> Te recomendamos las herramientas y el stack ideal</p>
+            <p><span className={styles.trustDot} /> Definimos tu embudo de reservas, pagos y seguimiento</p>
             <p><span className={styles.trustDot} /> Sales con un plan de automatización a tu medida</p>
           </div>
         </div>
