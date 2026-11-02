@@ -1,12 +1,37 @@
-// pages/success.js
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import styles from "../components/Formulario.module.css";
 
 export default function SuccessPage() {
-  const { query } = useRouter();
-  const { name, date, hour, email, telefono } = query;
+  const router = useRouter();
+  const [booking, setBooking] = useState(null);
+  const [error, setError] = useState("");
 
-  const fechaFormato = date
-    ? new Date(`${date}T${hour}:00`).toLocaleString("es-PE", {
+  useEffect(() => {
+    if (!router.isReady) return;
+    const sessionId = router.query.session_id;
+    if (typeof sessionId !== "string") {
+      setError("No encontramos una sesión de pago para verificar.");
+      return;
+    }
+
+    let active = true;
+    fetch(`/api/booking-status?session_id=${encodeURIComponent(sessionId)}`)
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "No pudimos verificar el pago.");
+        if (active) setBooking(data.booking);
+      })
+      .catch((fetchError) => {
+        if (active) setError(fetchError.message);
+      });
+
+    return () => { active = false; };
+  }, [router.isReady, router.query.session_id]);
+
+  const fechaFormato = booking
+    ? new Date(`${booking.date}T${booking.hour}:00-05:00`).toLocaleString("es-PE", {
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -17,35 +42,27 @@ export default function SuccessPage() {
       })
     : "";
 
-  if (!name) return <p>Cargando...</p>;
-
   return (
-    <div style={{ fontFamily: "Arial", padding: "2rem", maxWidth: "600px", margin: "auto" }}>
-      <div style={{
-        border: "2px solid #4CAF50",
-        borderRadius: "8px",
-        padding: "1.5rem",
-        backgroundColor: "#f0fff4",
-        textAlign: "center"
-      }}>
-        <h2 style={{ color: "#4CAF50" }}>✅ ¡Reserva confirmada!</h2>
-        <p><strong>{name}</strong>, tu cita ha sido agendada correctamente para:</p>
-        <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{fechaFormato}</p>
-        <p>Te hemos enviado un correo de confirmación a <strong>{email}</strong>.</p>
-        <p><strong>Puedes contactarnos al +51 941492192</strong></p>
-
-        <a href="/" style={{
-          marginTop: "1.5rem",
-          display: "inline-block",
-          padding: "0.75rem 1.5rem",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          textDecoration: "none",
-          borderRadius: "5px"
-        }}>
-          Volver al inicio
-        </a>
-      </div>
-    </div>
+    <main className={styles.successPage}>
+      <section className={styles.successPanel} aria-live="polite">
+        {booking ? (
+          <>
+            <div className={styles.successMark} aria-hidden="true">✓</div>
+            <span className={styles.eyebrow}>PAGO VERIFICADO</span>
+            <h1>Tu cita está confirmada</h1>
+            <p><strong>{booking.name}</strong>, reservamos este espacio para ti:</p>
+            <p className={styles.successDetails}>{fechaFormato}<br />{booking.email}</p>
+            <p>Te enviaremos los detalles de la cita por correo.</p>
+          </>
+        ) : (
+          <>
+            <span className={styles.eyebrow}>VIRTUAL FLOW · RESERVAS</span>
+            <h1>{error ? "No se pudo confirmar" : "Verificando tu pago…"}</h1>
+            <p>{error || "Estamos consultando el estado de tu pago con Stripe."}</p>
+          </>
+        )}
+        <Link href="/" className={styles.homeLink}>Volver al inicio</Link>
+      </section>
+    </main>
   );
 }

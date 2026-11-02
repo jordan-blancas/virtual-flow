@@ -1,121 +1,180 @@
-"use client";
-
-
 import { motion } from "framer-motion";
-import { useState } from "react";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import CalendarioReserva from "./CalendarioReserva";
+import { useEffect, useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import CalendarioVisual from "./CalendarioVisual";
+import styles from "./Formulario.module.css";
 
 export default function Formulario() {
   const [telefono, setTelefono] = useState("");
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState("");
-  const [enviado, setEnviado] = useState(false);
+  const [disponibilidad, setDisponibilidad] = useState({});
+  const [ocupados, setOcupados] = useState([]);
+  const [agendaCargada, setAgendaCargada] = useState(false);
+  const [agendaError, setAgendaError] = useState("");
+  const [error, setError] = useState("");
+  const [procesando, setProcesando] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.nombre.value;
-    const email = form.email.value;
-    const date = fecha;
-    const hour = hora;
-    const fechaCompleta = new Date(`${date}T${hour}`);
-    const ahora = new Date();
-    if (fechaCompleta <= ahora) {
-      alert("La fecha y hora deben ser futuras.");
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/disponibilidad", { signal: controller.signal })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "No se pudo cargar la agenda.");
+        setDisponibilidad(data.disponibilidad);
+        setOcupados(data.ocupados);
+        setAgendaCargada(true);
+      })
+      .catch((fetchError) => {
+        if (fetchError.name !== "AbortError") {
+          setAgendaError("No pudimos consultar los horarios. Vuelve a intentarlo en unos minutos.");
+        }
+      });
+    return () => controller.abort();
+  }, []);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+
+    if (!fecha || !hora) {
+      setError("Selecciona una fecha y una hora para continuar.");
       return;
     }
-    const soloNumeros = telefono.replace(/\D/g, '');
-    if (!telefono || soloNumeros.length < 8) {
-      alert("Por favor, ingresa un número de teléfono válido con al menos 8 dígitos.");
+    if (telefono.replace(/\D/g, "").length < 8) {
+      setError("Ingresa un número de teléfono válido.");
       return;
     }
+
+    setProcesando(true);
+    const formData = new FormData(event.currentTarget);
+
     try {
-      const res = await fetch("/api/checkout", {
+      const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, date, hour, telefono }),
+        body: JSON.stringify({
+          name: formData.get("nombre"),
+          email: formData.get("email"),
+          telefono,
+          date: fecha,
+          hour: hora,
+          message: formData.get("mensaje"),
+        }),
       });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert("No se pudo generar el enlace de pago.");
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 409) {
+          const availabilityResponse = await fetch("/api/disponibilidad");
+          if (availabilityResponse.ok) {
+            const availability = await availabilityResponse.json();
+            setDisponibilidad(availability.disponibilidad);
+            setOcupados(availability.ocupados);
+            setHora("");
+          }
+        }
+        throw new Error(data.error || "No se pudo iniciar el pago.");
       }
-    } catch (error) {
-      console.error("Error al redirigir a Stripe:", error);
-      alert("Ocurrió un error al procesar el pago.");
+
+      window.location.assign(data.url);
+    } catch (submitError) {
+      setError(submitError.message || "Ocurrió un error al procesar la reserva.");
+      setProcesando(false);
     }
-  };
+  }
 
   return (
-    <section id="formulario" className="py-20 px-4 bg-white text-gray-800">
+    <section id="formulario" className={styles.section}>
+      <div className={styles.gridBackdrop} aria-hidden="true" />
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.65 }}
         viewport={{ once: true }}
-        className="max-w-3xl mx-auto"
+        className={styles.layout}
       >
-        <h2 className="text-3xl font-bold mb-6 text-center">Reserva una cita</h2>
-        <p className="text-center text-gray-600 mb-10">
-          Completa el formulario y asegura tu espacio.
-        </p>
-        {!enviado ? (
-          <form
-            onSubmit={handleSubmit}
-            className="grid gap-6 bg-gray-50 p-6 rounded-xl shadow-lg"
-          >
-            <input
-              required
-              name="nombre"
-              type="text"
-              placeholder="Tu nombre"
-              className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input
-                required
-                name="email"
-                type="email"
-                placeholder="Correo electrónico"
-                className="sm:col-span-2 p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-              <PhoneInput
-                country={'pe'}
-                value={telefono}
-                onChange={(phone) => setTelefono(phone)}
-                inputProps={{
-                  name: 'telefono',
-                  required: true,
-                }}
-                containerClass="w-full"
-                inputClass="!w-full !pl-[58px] !h-12 !rounded !border !border-gray-300 focus:!outline-none focus:!ring-2 focus:!ring-indigo-400"
-                buttonClass="!h-12 !border-none !bg-transparent"
-                dropdownClass="!z-50"
-              />
+        <div className={styles.intro}>
+          <span className={styles.eyebrow}>VIRTUAL FLOW · RESERVAS</span>
+          <h2 className={styles.title}>
+            Hagamos espacio para tu <span>próxima idea.</span>
+          </h2>
+          <p className={styles.lead}>
+            Elige el momento que te funcione. Al continuar, podrás completar el pago de forma segura.
+          </p>
+          <div className={styles.trustList}>
+            <p><span className={styles.trustDot} /> Horarios actualizados en tiempo real</p>
+            <p><span className={styles.trustDot} /> Tu espacio se bloquea durante el pago</p>
+            <p><span className={styles.trustDot} /> Confirmación después de validar el pago</p>
+          </div>
+        </div>
+
+        <div className={styles.panel}>
+          <div className={styles.panelHeading}>
+            <div>
+              <span className={styles.step}>01 / AGENDA</span>
+              <h3>Reserva tu cita</h3>
             </div>
-            <CalendarioVisual fecha={fecha} setFecha={setFecha} hora={hora} setHora={setHora} />
-            <textarea
-              name="mensaje"
-              rows={4}
-              placeholder="¿En qué necesitas ayuda?"
-              className="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            ></textarea>
+            <span className={styles.secureBadge}>
+              <span aria-hidden="true">●</span> Pago seguro
+            </span>
+          </div>
+
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.fieldsGrid}>
+              <label className={styles.field}>
+                <span>Nombre</span>
+                <input required maxLength={120} name="nombre" type="text" placeholder="Tu nombre" autoComplete="name" />
+              </label>
+              <label className={styles.field}>
+                <span>Correo electrónico</span>
+                <input required name="email" type="email" placeholder="tu@correo.com" autoComplete="email" />
+              </label>
+              <label className={`${styles.field} ${styles.phoneField}`}>
+                <span>Teléfono</span>
+                <PhoneInput
+                  country="pe"
+                  value={telefono}
+                  onChange={setTelefono}
+                  inputProps={{ name: "telefono", required: true, autoComplete: "tel" }}
+                  containerClass={styles.phoneContainer}
+                  inputClass={styles.phoneInput}
+                  buttonClass={styles.phoneCountry}
+                  dropdownClass={styles.phoneDropdown}
+                />
+              </label>
+            </div>
+
+            <CalendarioVisual
+              fecha={fecha}
+              setFecha={setFecha}
+              hora={hora}
+              setHora={setHora}
+              disponibilidad={disponibilidad}
+              ocupados={ocupados}
+              cargando={!agendaCargada && !agendaError}
+              error={agendaError}
+            />
+
+            <label className={`${styles.field} ${styles.messageField}`}>
+              <span>¿En qué necesitas ayuda? <em>Opcional</em></span>
+              <textarea name="mensaje" rows={3} maxLength={2000} placeholder="Cuéntanos brevemente qué tienes en mente" />
+            </label>
+
+            {error && <p className={styles.error} role="alert">{error}</p>}
+
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white font-semibold py-3 rounded hover:bg-indigo-500 transition"
+              className={styles.submitButton}
+              disabled={!agendaCargada || Boolean(agendaError) || !fecha || !hora || procesando}
             >
-              Reservar y pagar
+              {procesando ? "Conectando con Stripe…" : "Continuar al pago"}
+              {!procesando && <span aria-hidden="true">↗</span>}
             </button>
+            <p className={styles.disclaimer}>El horario queda confirmado únicamente cuando el pago se acredita.</p>
           </form>
-        ) : (
-          <div className="text-center text-green-600 font-semibold text-lg">
-            ✅ ¡Reserva recibida! Pronto te contactaremos.
-          </div>
-        )}
+        </div>
       </motion.div>
     </section>
   );
