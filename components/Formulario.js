@@ -110,15 +110,15 @@ export default function Formulario() {
         <div className={styles.intro}>
           <span className={styles.eyebrow}>VIRTUAL FLOW · RESERVAS</span>
           <h2 className={styles.title}>
-            Hagamos espacio para tu <span>próxima idea.</span>
+            Deja de operar a mano. <span>Diseñemos tu piloto automático.</span>
           </h2>
           <p className={styles.lead}>
-            Elige el momento que te funcione. Al continuar, podrás completar el pago de forma segura.
+            En una sesión 1 a 1 analizamos cómo funciona tu negocio hoy y te mostramos qué automatizar primero para ganar tiempo y vender más.
           </p>
           <div className={styles.trustList}>
-            <p><span className={styles.trustDot} /> Horarios actualizados en tiempo real</p>
-            <p><span className={styles.trustDot} /> Tu espacio se bloquea durante el pago</p>
-            <p><span className={styles.trustDot} /> Confirmación después de validar el pago</p>
+            <p><span className={styles.trustDot} /> Estudiamos tu negocio y detectamos dónde pierdes tiempo y dinero</p>
+            <p><span className={styles.trustDot} /> Armamos tu Business Model Canvas</p>
+            <p><span className={styles.trustDot} /> Sales con un plan de automatización a tu medida</p>
           </div>
         </div>
 
