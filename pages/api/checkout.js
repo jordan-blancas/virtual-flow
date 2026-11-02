@@ -2,6 +2,11 @@ import { getSupabaseAdmin } from "../../lib/supabaseAdmin";
 import { getStripe } from "../../lib/stripe";
 import { generarDisponibilidad } from "../../lib/disponibilidad";
 
+function isReservationStoreUnavailable(error) {
+  return ["42P01", "PGRST205"].includes(error.code) ||
+    error.message?.includes("Faltan SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY");
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -34,7 +39,6 @@ export default async function handler(req, res) {
     }
 
     const stripe = getStripe();
-    const supabase = getSupabaseAdmin();
     const expiresAt = Math.ceil(Date.now() / 1000) + 30 * 60;
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ||
       `${req.headers["x-forwarded-proto"] || (req.headers.host?.includes("localhost") ? "http" : "https")}://${req.headers.host}`;
@@ -61,30 +65,34 @@ export default async function handler(req, res) {
       },
     });
 
-    await supabase
-      .from("reservas")
-      .update({ status: "expired" })
-      .eq("status", "pending")
-      .lte("expires_at", new Date().toISOString());
+    try {
+      const supabase = getSupabaseAdmin();
+      await supabase
+        .from("reservas")
+        .update({ status: "expired" })
+        .eq("status", "pending")
+        .lte("expires_at", new Date().toISOString());
 
-    const { error } = await supabase.from("reservas").insert({
-      fecha: reserva.date,
-      hora: reserva.hour,
-      nombre: reserva.name,
-      correo: reserva.email,
-      telefono: reserva.telefono,
-      mensaje: reserva.message,
-      status: "pending",
-      stripe_session_id: session.id,
-      expires_at: new Date(expiresAt * 1000).toISOString(),
-    });
+      const { error } = await supabase.from("reservas").insert({
+        fecha: reserva.date,
+        hora: reserva.hour,
+        nombre: reserva.name,
+        correo: reserva.email,
+        telefono: reserva.telefono,
+        mensaje: reserva.message,
+        status: "pending",
+        stripe_session_id: session.id,
+        expires_at: new Date(expiresAt * 1000).toISOString(),
+      });
 
-    if (error) {
-      await stripe.checkout.sessions.expire(session.id).catch(() => {});
-      if (error.code === "23505") {
+      if (error) throw error;
+    } catch (storeError) {
+      if (storeError.code === "23505") {
+        await stripe.checkout.sessions.expire(session.id).catch(() => {});
         return res.status(409).json({ error: "Ese horario acaba de ser reservado. Elige otro." });
       }
-      throw error;
+      if (!isReservationStoreUnavailable(storeError)) throw storeError;
+      console.warn("Reserva sin bloqueo compartido: falta configurar la tabla reservas.");
     }
 
     return res.status(200).json({ url: session.url });

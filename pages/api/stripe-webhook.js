@@ -2,6 +2,11 @@ import { enviarCorreo } from "../../lib/sendEmail";
 import { getStripe } from "../../lib/stripe";
 import { getSupabaseAdmin } from "../../lib/supabaseAdmin";
 
+function isReservationStoreUnavailable(error) {
+  return ["42P01", "PGRST205"].includes(error.code) ||
+    error.message?.includes("Faltan SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY");
+}
+
 export const config = {
   api: { bodyParser: false },
 };
@@ -39,24 +44,44 @@ function formatBookingDate(fecha, hora) {
 async function confirmPayment(session) {
   if (session.payment_status !== "paid") return;
 
-  const supabase = getSupabaseAdmin();
-  const { data: booking, error } = await supabase
-    .from("reservas")
-    .select("id, fecha, hora, nombre, correo, telefono, mensaje, status, confirmation_sent_at")
-    .eq("stripe_session_id", session.id)
-    .maybeSingle();
+  let supabase = null;
+  let booking = null;
+  try {
+    supabase = getSupabaseAdmin();
+    const { data, error } = await supabase
+      .from("reservas")
+      .select("id, fecha, hora, nombre, correo, telefono, mensaje, status, confirmation_sent_at")
+      .eq("stripe_session_id", session.id)
+      .maybeSingle();
+    if (error) throw error;
+    booking = data;
+  } catch (error) {
+    if (!isReservationStoreUnavailable(error)) throw error;
+  }
 
-  if (error) throw error;
-  if (!booking) throw new Error("No se encontró la reserva asociada al pago.");
-
-  if (booking.status !== "paid") {
-    const { error: updateError } = await supabase
+  if (booking && booking.status !== "paid") {
+    const { error } = await supabase
       .from("reservas")
       .update({ status: "paid", paid_at: new Date().toISOString() })
       .eq("id", booking.id);
-    if (updateError) throw updateError;
+    if (error) throw error;
   }
-  if (booking.confirmation_sent_at) return;
+
+  const stripe = getStripe();
+  const latestSession = await stripe.checkout.sessions.retrieve(session.id);
+  if (latestSession.metadata.confirmation_sent === "true") return;
+
+  booking = booking || {
+    fecha: session.metadata.date,
+    hora: session.metadata.hour,
+    nombre: session.metadata.name,
+    correo: session.metadata.email,
+    telefono: session.metadata.telefono,
+    mensaje: "",
+  };
+  if (!booking.fecha || !booking.hora || !booking.nombre || !booking.correo) {
+    throw new Error("La sesión pagada no contiene los datos de la reserva.");
+  }
 
   const nombre = escapeHtml(booking.nombre);
   const correo = escapeHtml(booking.correo);
@@ -77,11 +102,17 @@ async function confirmPayment(session) {
     }),
   ]);
 
-  const { error: emailUpdateError } = await supabase
-    .from("reservas")
-    .update({ confirmation_sent_at: new Date().toISOString() })
-    .eq("id", booking.id);
-  if (emailUpdateError) throw emailUpdateError;
+  await stripe.checkout.sessions.update(session.id, {
+    metadata: { ...latestSession.metadata, confirmation_sent: "true" },
+  });
+
+  if (booking.id && supabase) {
+    const { error } = await supabase
+      .from("reservas")
+      .update({ confirmation_sent_at: new Date().toISOString() })
+      .eq("id", booking.id);
+    if (error) throw error;
+  }
 }
 
 export default async function handler(req, res) {
@@ -107,12 +138,16 @@ export default async function handler(req, res) {
 
   try {
     if (event.type === "checkout.session.expired") {
-      const { error } = await getSupabaseAdmin()
-        .from("reservas")
-        .update({ status: "expired" })
-        .eq("stripe_session_id", event.data.object.id)
-        .eq("status", "pending");
-      if (error) throw error;
+      try {
+        const { error } = await getSupabaseAdmin()
+          .from("reservas")
+          .update({ status: "expired" })
+          .eq("stripe_session_id", event.data.object.id)
+          .eq("status", "pending");
+        if (error) throw error;
+      } catch (error) {
+        if (!isReservationStoreUnavailable(error)) throw error;
+      }
     }
 
     if (["checkout.session.completed", "checkout.session.async_payment_succeeded"].includes(event.type)) {

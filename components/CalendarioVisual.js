@@ -29,7 +29,7 @@ function limaToday() {
   return `${values.year}-${values.month}-${values.day}`;
 }
 
-export default function CalendarioVisual({ fecha, setFecha, hora, setHora, disponibilidad, ocupados, cargando, error }) {
+export default function CalendarioVisual({ fecha, setFecha, hora, setHora, disponibilidad, ocupados, cargando, error, advertencia }) {
   const ocupadosSet = useMemo(() => new Set(ocupados), [ocupados]);
   const fechas = Object.keys(disponibilidad).sort();
   const ultimaFecha = fechas[fechas.length - 1];
@@ -89,6 +89,7 @@ export default function CalendarioVisual({ fecha, setFecha, hora, setHora, dispo
           <p className={styles.timeTitle}>{fecha ? "Horas" : "Elige un día"}</p>
           {cargando && <p className={styles.calendarHint}>Consultando agenda…</p>}
           {error && <p className={styles.calendarError} role="alert">{error}</p>}
+          {advertencia && <p className={styles.calendarHint}>{advertencia}</p>}
           {!cargando && !error && !fecha && <p className={styles.calendarHint}>Los días con horarios libres están resaltados.</p>}
           {!cargando && !error && fecha && horasDisponibles.length === 0 && (
             <p className={styles.calendarHint}>Ya no quedan horarios para este día.</p>

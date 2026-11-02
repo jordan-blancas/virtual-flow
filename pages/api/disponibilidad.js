@@ -9,6 +9,8 @@ export default async function handler(req, res) {
   try {
     const disponibilidad = generarDisponibilidad();
     const fechas = Object.keys(disponibilidad).sort();
+    res.setHeader("Cache-Control", "no-store");
+
     const { data, error } = await getSupabaseAdmin()
       .from("reservas")
       .select("fecha, hora, status, expires_at")
@@ -23,10 +25,13 @@ export default async function handler(req, res) {
       .filter((reserva) => reserva.status === "paid" || new Date(reserva.expires_at).getTime() > ahora)
       .map((reserva) => `${reserva.fecha}T${reserva.hora.slice(0, 5)}`);
 
-    res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ disponibilidad, ocupados });
+    return res.status(200).json({ disponibilidad, ocupados, sincronizada: true });
   } catch (error) {
     console.error("Error al consultar disponibilidad:", error.message);
-    return res.status(503).json({ error: "No se pudo consultar la agenda." });
+    return res.status(200).json({
+      disponibilidad: generarDisponibilidad(),
+      ocupados: [],
+      sincronizada: false,
+    });
   }
 }

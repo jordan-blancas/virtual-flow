@@ -4,6 +4,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import CalendarioVisual from "./CalendarioVisual";
 import styles from "./Formulario.module.css";
+import { generarDisponibilidad } from "../lib/disponibilidad";
 
 export default function Formulario() {
   const [telefono, setTelefono] = useState("");
@@ -13,6 +14,7 @@ export default function Formulario() {
   const [ocupados, setOcupados] = useState([]);
   const [agendaCargada, setAgendaCargada] = useState(false);
   const [agendaError, setAgendaError] = useState("");
+  const [agendaAviso, setAgendaAviso] = useState("");
   const [error, setError] = useState("");
   const [procesando, setProcesando] = useState(false);
 
@@ -24,11 +26,18 @@ export default function Formulario() {
         if (!response.ok) throw new Error(data.error || "No se pudo cargar la agenda.");
         setDisponibilidad(data.disponibilidad);
         setOcupados(data.ocupados);
+        setAgendaAviso(data.sincronizada === false
+          ? "Horarios disponibles. El bloqueo compartido se activará al configurar la agenda."
+          : "");
         setAgendaCargada(true);
       })
       .catch((fetchError) => {
         if (fetchError.name !== "AbortError") {
-          setAgendaError("No pudimos consultar los horarios. Vuelve a intentarlo en unos minutos.");
+          setDisponibilidad(generarDisponibilidad());
+          setOcupados([]);
+          setAgendaError("");
+          setAgendaAviso("Horarios disponibles. El bloqueo compartido se activará al configurar la agenda.");
+          setAgendaCargada(true);
         }
       });
     return () => controller.abort();
@@ -72,6 +81,9 @@ export default function Formulario() {
             const availability = await availabilityResponse.json();
             setDisponibilidad(availability.disponibilidad);
             setOcupados(availability.ocupados);
+            setAgendaAviso(availability.sincronizada === false
+              ? "Horarios disponibles. El bloqueo compartido se activará al configurar la agenda."
+              : "");
             setHora("");
           }
         }
@@ -155,6 +167,7 @@ export default function Formulario() {
               ocupados={ocupados}
               cargando={!agendaCargada && !agendaError}
               error={agendaError}
+              advertencia={agendaAviso}
             />
 
             <label className={`${styles.field} ${styles.messageField}`}>
