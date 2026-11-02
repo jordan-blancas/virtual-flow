@@ -15,7 +15,7 @@ const proceso = [
 
 const cifras = [
   { valor: "24/7", etiqueta: "Reservas y cobros" },
-  { valor: "+4", etiqueta: "Plataformas lanzadas" },
+  { valor: "+40", etiqueta: "Plataformas lanzadas" },
   { valor: "100%", etiqueta: "A tu medida" },
 ];
 
