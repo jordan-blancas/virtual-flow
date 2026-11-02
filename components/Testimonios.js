@@ -32,7 +32,7 @@ export default function Testimonios() {
   }, []);
 
   return (
-    <section className={styles.section}>
+    <section id="proyectos" className={styles.section}>
       <h2 className={styles.title}>Proyectos realizados</h2>
       <div className={styles.slider}>
         {testimonios.map((t, i) => (
