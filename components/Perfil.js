@@ -28,34 +28,36 @@ const enlaces = [
 export default function Perfil() {
   return (
     <section id="perfil" className="bg-gradient-to-r from-indigo-50 via-white to-purple-50 px-4 py-8 text-gray-800 sm:py-10">
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-      >
-        <div className="flex min-w-0 items-center gap-3">
+      <div className="mx-auto max-w-6xl">
+        <h2 className="text-center text-xl font-bold text-gray-950 sm:text-2xl">
+          Ingeniería aplicada a tu negocio
+        </h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="mx-auto mt-5 grid max-w-5xl grid-cols-[52px_minmax(0,1fr)] items-center gap-x-3 gap-y-2 sm:grid-cols-[64px_minmax(0,1fr)] sm:gap-x-4"
+        >
           <img
             src="https://avatars.githubusercontent.com/u/54956790?v=4"
             alt=""
             loading="lazy"
-            className="h-14 w-14 shrink-0 rounded-full border-2 border-white object-cover shadow-md sm:h-16 sm:w-16"
+            className="row-span-1 h-12 w-12 rounded-full border-2 border-white object-cover shadow-md sm:h-14 sm:w-14"
           />
-          <div className="min-w-0">
-            <h2 className="truncate text-lg font-bold leading-tight text-gray-950 sm:text-xl">
-              Jordan Blancas
-            </h2>
-            <p className="mt-1 max-w-full overflow-x-auto whitespace-nowrap text-[11px] font-semibold text-indigo-700 sm:text-sm">
-              CEO de Virtual Flow · Ingeniero consultor · Docente universitario e investigador
-            </p>
-            <p className="mt-1 max-w-full overflow-x-auto whitespace-nowrap text-xs text-gray-600 sm:text-sm">
-              Ingeniería aplicada a entender procesos, conectar tecnología y resolver problemas reales.
-            </p>
-          </div>
-        </div>
+          <h3 className="min-w-0 truncate text-lg font-bold leading-tight text-gray-950 sm:text-xl">
+            Jordan Blancas
+          </h3>
+          <p className="col-span-2 whitespace-nowrap text-[9px] font-semibold text-indigo-700 max-[359px]:text-[8px] min-[420px]:text-[10px] sm:col-start-2 sm:col-span-1 sm:text-sm">
+            CEO de Virtual Flow · Ingeniero consultor · Docente universitario e investigador
+          </p>
+          <p className="col-span-2 whitespace-normal text-sm leading-relaxed text-gray-600 sm:col-start-2 sm:col-span-1 sm:text-base">
+            Mi formación me enseñó a analizar sistemas completos, entender cómo interactúan sus partes y diseñar soluciones confiables. En Virtual Flow aplico ese enfoque a los procesos de cada negocio: identificamos tareas manuales y oportunidades de mejora, y las convertimos en soluciones digitales y automatizaciones prácticas.
+          </p>
+        </motion.div>
 
-        <ul className="flex flex-nowrap items-center gap-1.5 sm:gap-2">
+        <ul className="mx-auto mt-5 flex w-fit max-w-full flex-nowrap items-center justify-center gap-2 overflow-x-auto py-1">
           {enlaces.map(({ nombre, href, Icono }) => (
             <li key={nombre} className="shrink-0">
               <a
@@ -72,7 +74,7 @@ export default function Perfil() {
             </li>
           ))}
         </ul>
-      </motion.div>
+      </div>
     </section>
   );
 }
