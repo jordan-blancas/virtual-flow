@@ -1,9 +1,43 @@
 .footer {
   background: #222;
   color: #fff;
-  padding: 2rem 0 1rem 0;
+  padding: 2rem 1rem 1rem;
   text-align: center;
   font-size: 1rem;
+}
+
+.addresses {
+  display: grid;
+  max-width: 760px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.address strong {
+  margin-bottom: 0.2rem;
+  color: #fde047;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 560px) {
+  .addresses {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    max-width: 320px;
+  }
 }
 
 .links {
