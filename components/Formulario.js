@@ -124,6 +124,9 @@ export default function Formulario() {
             <p><span className={styles.trustDot} /> Definimos tu embudo de reservas, pagos y seguimiento</p>
             <p><span className={styles.trustDot} /> Sales con un plan de automatización a tu medida</p>
           </div>
+          <p className={styles.consultationPrice}>
+            La consulta cuesta <strong>$50</strong> y se paga al reservar. Si contratas una implementación con nosotros dentro de 30 días, descontamos ese monto del proyecto.
+          </p>
         </div>
 
         <div className={styles.panel}>
@@ -189,7 +192,9 @@ export default function Formulario() {
               {procesando ? "Redirigiendo a la sección de pago…" : "Continuar al pago"}
               {!procesando && <span aria-hidden="true">↗</span>}
             </button>
-            <p className={styles.disclaimer}>El horario queda confirmado únicamente cuando el pago se acredita.</p>
+            <p className={styles.disclaimer}>
+              Aquí pagas solo la consulta de $50. La implementación se cotiza después del diagnóstico; no se cobra desde esta página.
+            </p>
           </form>
         </div>
       </motion.div>
