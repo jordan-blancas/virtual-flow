@@ -118,7 +118,7 @@ export default function Testimonios() {
             href="#formulario"
             className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-yellow-400 px-6 py-3 font-semibold text-indigo-950 transition hover:bg-yellow-300"
           >
-            Reserva tu consulta de $50 <span aria-hidden="true">↗</span>
+            Reserva tu consulta de $50 USD <span aria-hidden="true">↗</span>
           </a>
         </div>
       </motion.div>

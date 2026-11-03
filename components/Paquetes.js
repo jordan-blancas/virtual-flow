@@ -4,7 +4,7 @@ const paquetes = [
   {
     etiqueta: "PRIMER PASO",
     titulo: "Piloto operativo",
-    precio: "Desde $1,200",
+    precio: "Desde $1,200 USD",
     descripcion: "Automatiza un proceso importante de tu negocio y valida el impacto antes de escalar.",
     entregables: [
       "1 proceso de negocio priorizado",
@@ -84,14 +84,14 @@ export default function Paquetes() {
                     : "border border-indigo-200 bg-indigo-50 text-indigo-800 hover:bg-indigo-100"
                 }`}
               >
-                Evaluar en una consulta de $50 <span aria-hidden="true">↗</span>
+                Evaluar en una consulta de $50 USD <span aria-hidden="true">↗</span>
               </a>
             </motion.article>
           ))}
         </div>
 
         <p className="mt-6 text-center text-xs leading-relaxed text-gray-500">
-          La consulta de $50 se paga al reservar y se descuenta del proyecto si contratas dentro de 30 días. Licencias, consumo de IA y servicios de terceros se cotizan por separado.
+          La consulta de $50 USD se paga al reservar y se descuenta del proyecto si contratas dentro de 30 días. Licencias, consumo de IA y servicios de terceros se cotizan por separado.
         </p>
       </motion.div>
     </section>

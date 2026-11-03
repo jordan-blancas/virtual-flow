@@ -125,7 +125,7 @@ export default function Formulario() {
             <p><span className={styles.trustDot} /> Sales con un plan de automatización a tu medida</p>
           </div>
           <p className={styles.consultationPrice}>
-            La consulta cuesta <strong>$50</strong> y se paga al reservar. Si contratas una implementación con nosotros dentro de 30 días, descontamos ese monto del proyecto.
+            La consulta cuesta <strong>$50 USD</strong> y se paga al reservar. Si contratas una implementación con nosotros dentro de 30 días, descontamos ese monto del proyecto.
           </p>
         </div>
 
@@ -193,7 +193,7 @@ export default function Formulario() {
               {!procesando && <span aria-hidden="true">↗</span>}
             </button>
             <p className={styles.disclaimer}>
-              Aquí pagas solo la consulta de $50. La implementación se cotiza después del diagnóstico; no se cobra desde esta página.
+              Aquí pagas solo la consulta de $50 USD. La implementación se cotiza después del diagnóstico; no se cobra desde esta página.
             </p>
           </form>
         </div>
