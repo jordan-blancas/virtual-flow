@@ -32,12 +32,32 @@
   text-transform: uppercase;
 }
 
-@media (max-width: 560px) {
-  .addresses {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    max-width: 320px;
-  }
+.contactButton {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(253, 224, 71, 0.75);
+  border-radius: 999px;
+  background: #facc15;
+  color: #24134d;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.contactButton:hover {
+  transform: translateY(-1px);
+  background: #fde047;
+}
+
+.contactButton svg {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .links {
