@@ -116,6 +116,22 @@
   font-size: 13px;
 }
 
+.consultationPrice {
+  max-width: 430px;
+  margin: 28px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(250, 204, 21, 0.3);
+  color: #fff1a8;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.consultationPrice strong {
+  color: #fde047;
+  font-size: 17px;
+  font-weight: 700;
+}
+
 .trustDot {
   width: 7px;
   height: 7px;

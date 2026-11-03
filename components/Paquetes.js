@@ -45,7 +45,7 @@ export default function Paquetes() {
             Empieza con lo que más impacto puede tener
           </h2>
           <p className="mt-5 text-lg text-gray-600">
-            Son referencias para orientarte, no una compra inmediata. Primero entendemos tu negocio y confirmamos juntos el alcance y la inversión.
+            Son referencias para orientarte, no una compra inmediata. Primero tenemos que entender tu negocio y confirmaremos juntos el alcance y la inversión.
           </p>
         </div>
 
