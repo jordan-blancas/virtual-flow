@@ -5,6 +5,7 @@ import Formulario from "../components/Formulario";
 import Paquetes from "../components/Paquetes";
 import Ecosistema from "../components/Ecosistema";
 import Testimonios from "../components/Testimonios";
+import Perfil from "../components/Perfil";
 import Footer from "../components/Footer";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <Paquetes />
       <Ecosistema />
       <Testimonios />
+      <Perfil />
       <Footer />
     </>
   );
